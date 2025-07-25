@@ -86,11 +86,11 @@ function getInitialAppState() {
     /* ignored */
   }
 
-  appState.ghPages = window.location.pathname.substring(1) === "elden-ring-weapon-calculator";
-  const regulationVersionName = window.location.pathname.substring(appState.ghPages ? 2 : 1);
-  if (regulationVersionName && regulationVersionName in regulationVersions) {
-    appState.regulationVersionName = regulationVersionName as RegulationVersionName;
-  }
+  // appState.ghPages = window.location.pathname.substring(1) === "elden-ring-weapon-calculator";
+  // const regulationVersionName = window.location.pathname.substring(appState.ghPages ? 2 : 1);
+  // if (regulationVersionName && regulationVersionName in regulationVersions) {
+  //   appState.regulationVersionName = regulationVersionName as RegulationVersionName;
+  // }
 
   return appState;
 }
@@ -103,6 +103,7 @@ function onAppStateChanged(appState: AppState) {
 }
 
 function updateUrl(regulationVersionName: RegulationVersionName, ghPages: boolean) {
+  return;
   window.history.replaceState(
     null,
     "",
