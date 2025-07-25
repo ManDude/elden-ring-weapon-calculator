@@ -34,6 +34,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "fast-xml-parser": "^4.2.7",
+    "gh-pages": "^6.3.0",
     "prettier": "2.7.1",
     "typescript": "5.0.4",
     "vite": "^4.2.0",
@@ -47,7 +48,9 @@
     "buildData:latest": "node src/buildData.ts vanilla public/regulation-vanilla-v1.14.js",
     "buildData:reforged": "node src/buildData.ts reforged public/regulation-reforged-v1.4.8G.js",
     "buildData:convergence": "node src/buildData.ts convergence public/regulation-convergence-v2.2.3.js",
-    "rebuildWeaponData": "yarn buildData:reforged"
+    "rebuildWeaponData": "yarn buildData:reforged",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -74,5 +77,6 @@
   "prettier": {
     "printWidth": 100,
     "trailingComma": "all"
-  }
+  },
+  "homepage": "https://mandude.github.io/elden-ring-weapon-calculator"
 }
