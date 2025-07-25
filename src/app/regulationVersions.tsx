@@ -75,7 +75,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
     disableTwoHandingAttackPowerBonus: true,
     ineffectiveAttributePenalty: 0.5,
     statusAdditionalCalcCorrectGraphId: 1007,
-    fetch: () => fetch(`/regulation-reforged-v1.4.8G.js?${import.meta.env.VITE_DATA_FORMAT}`),
+    fetch: () => fetch(`./regulation-reforged-v1.4.8G.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },
   convergence: {
     name: "The Convergence Mod",
