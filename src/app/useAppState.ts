@@ -23,6 +23,7 @@ interface AppState {
   readonly sortBy: SortBy;
   readonly reverse: boolean;
   readonly selectedWeapons: WeaponOption[];
+  readonly ghPages: boolean;
 }
 
 interface UpdateAppState extends AppState {
@@ -67,6 +68,7 @@ const defaultAppState: AppState = {
   sortBy: "totalAttack",
   reverse: false,
   selectedWeapons: [],
+  ghPages: false
 };
 
 /**
@@ -84,7 +86,8 @@ function getInitialAppState() {
     /* ignored */
   }
 
-  const regulationVersionName = window.location.pathname.substring(1);
+  appState.ghPages = window.location.pathname.substring(1) === "elden-ring-weapon-calculator";
+  const regulationVersionName = window.location.pathname.substring(appState.ghPages ? 2 : 1);
   if (regulationVersionName && regulationVersionName in regulationVersions) {
     appState.regulationVersionName = regulationVersionName as RegulationVersionName;
   }
@@ -99,11 +102,11 @@ function onAppStateChanged(appState: AppState) {
   localStorage.setItem("appState", JSON.stringify(appState));
 }
 
-function updateUrl(regulationVersionName: RegulationVersionName) {
+function updateUrl(regulationVersionName: RegulationVersionName, ghPages: boolean) {
   window.history.replaceState(
     null,
     "",
-    `/${regulationVersionName === "latest" ? "" : regulationVersionName}`,
+    ghPages ? `/elden-ring-weapon-calculator/${regulationVersionName === "latest" ? "" : regulationVersionName}` : `/${regulationVersionName === "latest" ? "" : regulationVersionName}`,
   );
 }
 
@@ -118,12 +121,12 @@ export default function useAppState() {
 
   useEffect(() => {
     onAppStateChanged(appState);
-    updateUrl(appState.regulationVersionName);
+    updateUrl(appState.regulationVersionName, appState.ghPages);
   }, [appState]);
 
   useEffect(() => {
     function onPopState() {
-      updateUrl(appState.regulationVersionName);
+      updateUrl(appState.regulationVersionName, appState.ghPages);
     }
 
     window.addEventListener("popstate", onPopState);
