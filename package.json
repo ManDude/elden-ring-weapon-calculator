@@ -48,7 +48,6 @@
     "buildData:reforged": "node src/buildData.ts reforged public/regulation-reforged-v1.4.8G.js",
     "buildData:convergence": "node src/buildData.ts convergence public/regulation-convergence-v2.2.3.js",
     "rebuildWeaponData": "yarn buildData:reforged"
-    // "rebuildWeaponData": "yarn buildData:latest && yarn buildData:reforged && yarn buildData:convergence"
   },
   "eslintConfig": {
     "extends": [
