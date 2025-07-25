@@ -1,3 +1,4 @@
+import type { RegulationVersion } from "./app/regulationVersions.tsx";
 import {
   allDamageTypes,
   allStatusTypes,
@@ -66,6 +67,9 @@ export interface EncodedWeaponJson {
   reinforceTypeId: number;
   attackElementCorrectId: number;
   calcCorrectGraphIds?: Partial<Record<AttackPowerType, number>>;
+  poise: number;
+  stamDmg: number;
+  crit: number;
   paired?: boolean;
   sorceryTool?: boolean;
   incantationTool?: boolean;
@@ -121,7 +125,7 @@ export function decodeRegulationData({
   statusSpEffectParams,
   weapons,
   scalingTiers,
-}: EncodedRegulationDataJson): Weapon[] {
+}: EncodedRegulationDataJson, regulationVersion: RegulationVersion): Weapon[] {
   const calcCorrectGraphsById = new Map(
     Object.entries(calcCorrectGraphs).map(([calcCorrectGraphId, calcCorrectGraph]) => [
       +calcCorrectGraphId,
@@ -240,6 +244,7 @@ export function decodeRegulationData({
         attributeScaling,
         attackElementCorrect,
         calcCorrectGraphs: weaponCalcCorrectGraphs,
+        statusAdditionalCalcCorrectGraph: regulationVersion.statusAdditionalCalcCorrectGraphId !== undefined ? getCalcCorrectGraph(regulationVersion.statusAdditionalCalcCorrectGraphId) : undefined,
         scalingTiers,
         dlc,
       };

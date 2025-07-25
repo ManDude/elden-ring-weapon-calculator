@@ -19,6 +19,7 @@ import {
   ScalingRenderer,
   AttributeRequirementRenderer,
   AttackPowerRenderer,
+  AttackPowerWithBaseRenderer,
 } from "./tableRenderers.tsx";
 
 const nameColumn: WeaponTableColumnDef = {
@@ -63,6 +64,47 @@ const attackColumns = Object.fromEntries(
             ineffective={ineffectiveAttackPowerTypes.includes(attackPowerType)}
           />
         );
+      },
+    },
+  ]),
+) as Record<AttackPowerType, WeaponTableColumnDef>;
+
+const attackWithBaseColumns = Object.fromEntries(
+  allAttackPowerTypes.map((attackPowerType): [AttackPowerType, WeaponTableColumnDef] => [
+    attackPowerType,
+    {
+      key: `${attackPowerType}Attack`,
+      sortBy: `${attackPowerType}Attack`,
+      header: damageTypeIcons.has(attackPowerType) ? (
+        <img
+          src={damageTypeIcons.get(attackPowerType)!}
+          alt={damageTypeLabels.get(attackPowerType)!}
+          title={damageTypeLabels.get(attackPowerType)!}
+          width={24}
+          height={24}
+        />
+      ) : (
+        <Typography component="span" variant="subtitle2">
+          {damageTypeLabels.get(attackPowerType)}
+        </Typography>
+      ),
+      render([, { attackPower, baseAttackPower, ineffectiveAttackPowerTypes }]) {
+        if (attackPower[attackPowerType] != baseAttackPower[attackPowerType]) {
+          return (
+            <AttackPowerWithBaseRenderer
+              value={attackPower[attackPowerType]}
+              valueBase={baseAttackPower[attackPowerType]}
+              ineffective={ineffectiveAttackPowerTypes.includes(attackPowerType)}
+            />
+          );
+        } else {
+          return (
+            <AttackPowerRenderer
+              value={attackPower[attackPowerType]}
+              ineffective={ineffectiveAttackPowerTypes.includes(attackPowerType)}
+            />
+          );
+        }
       },
     },
   ]),
@@ -227,8 +269,66 @@ const requirementColumns = allAttributes.map(
   }),
 );
 
+const miscColumns: WeaponTableColumnDef[] = [
+  {
+    key: "poise",
+    sortBy: "poise",
+    header: (
+      <Typography
+        component="span"
+        variant="subtitle2"
+        title={"Poise Damage"}
+      >
+        Poise
+      </Typography>
+    ),
+    render([weapon]) {
+      return (
+        <>{Math.round(weapon.poise * 10)}</>
+      );
+    },
+  },
+  {
+    key: "stamDmg",
+    sortBy: "stamDmg",
+    header: (
+      <Typography
+        component="span"
+        variant="subtitle2"
+        title={"Stamina Damage"}
+      >
+        Stamina
+      </Typography>
+    ),
+    render([weapon]) {
+      return (
+        <>{Math.round(weapon.stamDmg / 10)}</>
+      );
+    },
+  },
+  {
+    key: "crit",
+    sortBy: "crit",
+    header: (
+      <Typography
+        component="span"
+        variant="subtitle2"
+        title={"Critical Damage"}
+      >
+        Critical
+      </Typography>
+    ),
+    render([weapon]) {
+      return (
+        <>{Math.round(weapon.crit + 100)}</>
+      );
+    },
+  },
+];
+
 interface WeaponTableColumnsOptions {
   splitDamage: boolean;
+  showBaseDamage: boolean;
   splitSpellScaling: boolean;
   numericalScaling: boolean;
   attackPowerTypes: ReadonlySet<AttackPowerType>;
@@ -237,6 +337,7 @@ interface WeaponTableColumnsOptions {
 
 export default function getWeaponTableColumns({
   splitDamage,
+  showBaseDamage,
   splitSpellScaling,
   numericalScaling,
   attackPowerTypes,
@@ -279,11 +380,11 @@ export default function getWeaponTableColumns({
       ? {
           key: "attack",
           sx: {
-            width: 40 * (allDamageTypes.length + 1) + 27,
+            width: (showBaseDamage ? 85 : 40) * (allDamageTypes.length + 1) + 27,
           },
           header: "Attack Power",
           columns: [
-            ...allDamageTypes.map((damageType) => attackColumns[damageType]),
+            ...allDamageTypes.map((damageType) => (showBaseDamage ? attackWithBaseColumns : attackColumns)[damageType]),
             totalSplitAttackPowerColumn,
           ],
         }
@@ -309,10 +410,18 @@ export default function getWeaponTableColumns({
     {
       key: "scaling",
       sx: {
-        width: (numericalScaling ? 40 : 36) * scalingColumns.length + 21,
+        width: (numericalScaling ? 55 : 36) * scalingColumns.length + 21,
       },
       header: "Attribute Scaling",
       columns: numericalScaling ? numericalScalingColumns : scalingColumns,
+    },
+    {
+      key: "misc",
+      sx: {
+        width: 60 * miscColumns.length + 21,
+      },
+      header: "Other Properties",
+      columns: miscColumns,
     },
     {
       key: "requirements",

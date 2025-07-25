@@ -63,6 +63,26 @@ export interface Weapon {
   calcCorrectGraphs: Record<AttackPowerType, number[]>;
 
   /**
+   * 
+   */
+  statusAdditionalCalcCorrectGraph?: number[];
+
+  /**
+   * Poise damage of the weapon
+   */
+  poise: number;
+
+  /**
+   * Stamina damage of the weapon
+   */
+  stamDmg: number;
+
+  /**
+   * Critical attack percentage
+   */
+  crit: number;
+
+  /**
    * True if the weapon doesn't get a strength bonus when two-handing
    */
   paired?: boolean;

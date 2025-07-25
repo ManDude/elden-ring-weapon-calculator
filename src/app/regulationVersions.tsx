@@ -42,6 +42,11 @@ export interface RegulationVersion {
    */
   disableWeaponTypeFilter?: boolean;
 
+  /**
+   * Additional CalcCorrectGraph to use for status buildup Arcane scaling (Reforged)
+   */
+  statusAdditionalCalcCorrectGraphId?: number;
+
   fetch(): Promise<Response>;
 }
 
@@ -63,13 +68,14 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
         >
           ELDEN RING Reforged
         </Link>{" "}
-        mod v1.4.7A
+        mod v1.4.8G
       </>
     ),
     affinityOptions: reforgedAffinityOptions,
     disableTwoHandingAttackPowerBonus: true,
     ineffectiveAttributePenalty: 0.5,
-    fetch: () => fetch(`/regulation-reforged-v1.4.7A.js?${import.meta.env.VITE_DATA_FORMAT}`),
+    statusAdditionalCalcCorrectGraphId: 1007,
+    fetch: () => fetch(`/regulation-reforged-v1.4.8G.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },
   convergence: {
     name: "The Convergence Mod",

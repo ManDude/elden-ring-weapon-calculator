@@ -9,11 +9,13 @@ interface WeaponAttackOptions {
   twoHanding?: boolean;
   upgradeLevel: number;
   disableTwoHandingAttackPowerBonus?: boolean;
+  includeArcaneBonus?: boolean;
   ineffectiveAttributePenalty?: number;
 }
 
 export interface WeaponAttackResult {
   upgradeLevel: number;
+  baseAttackPower: Partial<Record<AttackPowerType, number>>;
   attackPower: Partial<Record<AttackPowerType, number>>;
   spellScaling: Partial<Record<AttackPowerType, number>>;
   ineffectiveAttributes: Attribute[];
@@ -69,6 +71,7 @@ export default function getWeaponAttack({
   twoHanding,
   upgradeLevel,
   disableTwoHandingAttackPowerBonus,
+  includeArcaneBonus,
   ineffectiveAttributePenalty = 0.4,
 }: WeaponAttackOptions): WeaponAttackResult {
   const adjustedAttributes = adjustAttributesForTwoHanding({ twoHanding, weapon, attributes });
@@ -79,21 +82,22 @@ export default function getWeaponAttack({
 
   const ineffectiveAttackPowerTypes: AttackPowerType[] = [];
 
+  const baseAttackPower: Partial<Record<AttackPowerType, number>> = {};
   const attackPower: Partial<Record<AttackPowerType, number>> = {};
   const spellScaling: Partial<Record<AttackPowerType, number>> = {};
 
   for (const attackPowerType of [...allDamageTypes, ...allStatusTypes]) {
     const isDamageType = allDamageTypes.includes(attackPowerType);
 
-    const baseAttackPower = weapon.attack[upgradeLevel][attackPowerType] ?? 0;
-    if (baseAttackPower || weapon.sorceryTool || weapon.incantationTool) {
+    const currentBaseAttackPower = weapon.attack[upgradeLevel][attackPowerType] ?? 0;
+    if (currentBaseAttackPower || weapon.sorceryTool || weapon.incantationTool) {
       // This weapon's AttackElementCorrectParam determines what attributes each damage type scales
       // with
       const scalingAttributes = weapon.attackElementCorrect[attackPowerType] ?? {};
 
       let totalScaling = 1;
 
-      if (ineffectiveAttributes.some((attribute) => scalingAttributes[attribute])) {
+      if (isDamageType && ineffectiveAttributes.some((attribute) => scalingAttributes[attribute])) {
         // If the requirements for this damage type are not met, a penalty is subtracted instead
         // of a scaling bonus being added
         totalScaling = 1 - ineffectiveAttributePenalty;
@@ -125,8 +129,12 @@ export default function getWeaponAttack({
 
       // The final scaling multiplier modifies the attack power for this damage type as a
       // percentage boost, e.g. 0.5 adds +50% of the base attack power
-      if (baseAttackPower) {
-        attackPower[attackPowerType] = baseAttackPower * totalScaling;
+      if (currentBaseAttackPower) {
+        baseAttackPower[attackPowerType] = currentBaseAttackPower;
+        if (includeArcaneBonus && !isDamageType && weapon.statusAdditionalCalcCorrectGraph) {
+          baseAttackPower[attackPowerType] *= 100 * weapon.statusAdditionalCalcCorrectGraph[adjustedAttributes["arc"]];
+        }
+        attackPower[attackPowerType] = baseAttackPower[attackPowerType] * totalScaling;
       }
 
       if (isDamageType && (weapon.sorceryTool || weapon.incantationTool)) {
@@ -137,6 +145,7 @@ export default function getWeaponAttack({
 
   return {
     upgradeLevel,
+    baseAttackPower,
     attackPower,
     spellScaling,
     ineffectiveAttributes,

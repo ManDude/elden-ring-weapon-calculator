@@ -560,6 +560,7 @@ const wepTypeOverrides = new Map([
         [18170000, WeaponType.HALBERD], // Starcaller Spire
         [21140000, WeaponType.FIST], // Fellthorn Clutches
         [34500000, WeaponType.HAND_TO_HAND], // Dryleaf Seal
+        [67520000, WeaponType.LIGHT_GREATSWORD], // Rellana's Twin Blades
       ] as const)
     : []),
 ]);
@@ -736,7 +737,7 @@ function parseWeapon(row: ParamRow): EncodedWeaponJson | null {
     url: urlOverrides.has(uninfusedWeaponId)
       ? urlOverrides.get(uninfusedWeaponId)
       : isConvergence
-      ? getConvergenceWeaponUrl(weaponType, weaponName, uninfusedWeaponId)
+      ? getConvergenceWeaponUrl(weaponType, weaponName)
       : undefined,
     affinityId: isUniqueWeapon(row) ? -1 : affinityId,
     weaponType,
@@ -761,6 +762,9 @@ function parseWeapon(row: ParamRow): EncodedWeaponJson | null {
     reinforceTypeId: row.reinforceTypeId,
     attackElementCorrectId: row.attackElementCorrectId,
     calcCorrectGraphIds,
+    poise: row.saWeaponDamage,
+    stamDmg: row.attackBaseStamina,
+    crit: row.throwAtkRate,
     paired: ifNotDefault(row.isDualBlade === 1, false),
     sorceryTool: ifNotDefault(row.enableMagic === 1, false),
     incantationTool: ifNotDefault(row.enableMiracle === 1, false),
@@ -938,6 +942,9 @@ const calcCorrectGraphIds = new Set([
   defaultStatusCalcCorrectGraphId,
   ...weaponsJson.flatMap((weapon) => Object.values(weapon.calcCorrectGraphIds ?? {})),
 ]);
+if(isReforged) {
+  calcCorrectGraphIds.add(1007); // Arcane status buildup 'bonus' (actually reduces enemy status absorption by this)
+}
 const calcCorrectGraphsJson = Object.fromEntries(
   [...calcCorrectGraphs.entries()]
     .filter(([id]) => calcCorrectGraphIds.has(id))

@@ -109,14 +109,19 @@ interface Props {
   upgradeLevel: number;
   maxUpgradeLevel?: number;
   splitDamage: boolean;
+  showBaseDamage: boolean;
   groupWeaponTypes: boolean;
   numericalScaling: boolean;
+  includeArcaneBonus: boolean;
+  showIncludeArcaneBonus: boolean;
   onAttributeChanged(attribute: Attribute, value: number): void;
   onTwoHandingChanged(twoHanding: boolean): void;
   onUpgradeLevelChanged(upgradeLevel: number): void;
   onSplitDamageChanged(splitDamage: boolean): void;
+  onShowBaseDamageChanged(showBaseDamage: boolean): void;
   onGroupWeaponTypesChanged(groupWeaponTypes: boolean): void;
   onNumericalScalingChanged(numericalScaling: boolean): void;
+  onIncludeArcaneBonusChanged(includeArcaneBonus: boolean): void;
 }
 
 /**
@@ -129,14 +134,19 @@ function WeaponListSettings({
   upgradeLevel,
   maxUpgradeLevel,
   splitDamage,
+  showBaseDamage,
   groupWeaponTypes,
   numericalScaling,
+  includeArcaneBonus,
+  showIncludeArcaneBonus,
   onAttributeChanged,
   onTwoHandingChanged,
   onUpgradeLevelChanged,
   onSplitDamageChanged,
+  onShowBaseDamageChanged,
   onGroupWeaponTypesChanged,
   onNumericalScalingChanged,
+  onIncludeArcaneBonusChanged,
 }: Props) {
   return (
     <Box
@@ -177,7 +187,7 @@ function WeaponListSettings({
             gridTemplateColumns: "1fr 1fr",
           },
           [theme.breakpoints.up(breakpoint)]: {
-            gridTemplateColumns: "1fr auto",
+            gridTemplateColumns: "1fr 1fr auto",
             justifySelf: "start",
           },
         })}
@@ -198,6 +208,18 @@ function WeaponListSettings({
           checked={splitDamage}
           onChange={onSplitDamageChanged}
         />
+        <BooleanInput
+          label="Split base and scaling damage"
+          checked={showBaseDamage}
+          onChange={onShowBaseDamageChanged}
+        />
+        {showIncludeArcaneBonus && (
+          <BooleanInput
+            label="Include Arcane buildup bonus"
+            checked={includeArcaneBonus}
+            onChange={onIncludeArcaneBonusChanged}
+          />
+        )}
       </Box>
     </Box>
   );

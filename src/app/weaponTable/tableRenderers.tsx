@@ -75,7 +75,7 @@ export const ScalingRenderer = memo(function ScalingRenderer({
   return scalingValue ? (
     <span title={`${Math.round(scalingValue! * 100000) / 1000}%`}>
       {numerical
-        ? round(scalingValue * 100)
+        ? round(scalingValue * 100000) / 1000
         : scalingTiers.find(([value]) => scalingValue >= value)?.[1]}
     </span>
   ) : (
@@ -143,4 +143,34 @@ export const AttackPowerRenderer = memo(function AttackPowerRenderer({
   }
 
   return <>{round(value)}</>;
+});
+
+/**
+ * Component that displays one damage type alongside its base damage.
+ */
+export const AttackPowerWithBaseRenderer = memo(function AttackPowerWithBaseRenderer({
+  value,
+  valueBase,
+  ineffective,
+}: {
+  value?: number;
+  valueBase?: number;
+  ineffective: boolean;
+}) {
+  if (value == null || valueBase == null) {
+    return blankIcon;
+  }
+
+  if (ineffective) {
+    return (
+      <Typography
+        sx={{ color: (theme) => theme.palette.error.main }}
+        aria-label={`${round(value)}. Unable to wield this weapon effectively with present stats`}
+      >
+        {round(valueBase)} - {-round(value-valueBase)}
+      </Typography>
+    );
+  }
+
+  return <>{round(valueBase)} + {round(value-valueBase)}</>;
 });

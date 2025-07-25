@@ -5,6 +5,9 @@ import { type Attribute, AttackPowerType } from "../calculator/calculator.ts";
 export type SortBy =
   | "name"
   | "totalAttack"
+  | "poise"
+  | "stamDmg"
+  | "crit"
   | `${AttackPowerType}Attack`
   | "sortBy"
   | `${AttackPowerType}SpellScaling`
@@ -26,6 +29,18 @@ export function sortWeapons(
 
     if (sortBy === "totalAttack") {
       return ([, { attackPower }]) => -getTotalDamageAttackPower(attackPower);
+    }
+
+    if (sortBy === "poise") {
+      return ([weapon]) => -weapon.poise;
+    }
+
+    if (sortBy === "stamDmg") {
+      return ([weapon]) => -weapon.stamDmg;
+    }
+
+    if (sortBy === "crit") {
+      return ([weapon]) => -weapon.crit;
     }
 
     if (sortBy.endsWith("Attack")) {

@@ -14,8 +14,10 @@ interface AppState {
   readonly weaponTypes: readonly WeaponType[];
   readonly affinityIds: readonly number[];
   readonly includeDLC: boolean;
+  readonly includeArcaneBonus: boolean;
   readonly effectiveOnly: boolean;
   readonly splitDamage: boolean;
+  readonly showBaseDamage: boolean;
   readonly groupWeaponTypes: boolean;
   readonly numericalScaling: boolean;
   readonly sortBy: SortBy;
@@ -31,8 +33,10 @@ interface UpdateAppState extends AppState {
   setWeaponTypes(weaponTypes: readonly WeaponType[]): void;
   setAffinityIds(affinityIds: readonly number[]): void;
   setIncludeDLC(includeDLC: boolean): void;
+  setIncludeArcaneBonus(includeArcaneBonus: boolean): void;
   setEffectiveOnly(effectiveOnly: boolean): void;
   setSplitDamage(splitDamage: boolean): void;
+  setShowBaseDamage(showBaseDamage: boolean): void;
   setGroupWeaponTypes(groupWeaponTypes: boolean): void;
   setNumericalScaling(numericalScaling: boolean): void;
   setSortBy(sortBy: SortBy): void;
@@ -41,7 +45,7 @@ interface UpdateAppState extends AppState {
 }
 
 const defaultAppState: AppState = {
-  regulationVersionName: "latest",
+  regulationVersionName: "reforged",
   attributes: {
     str: 30,
     dex: 30,
@@ -54,8 +58,10 @@ const defaultAppState: AppState = {
   weaponTypes: [WeaponType.AXE],
   affinityIds: [0, -1], // Standard and Special
   includeDLC: true,
+  includeArcaneBonus: false,
   effectiveOnly: false,
   splitDamage: true,
+  showBaseDamage: false,
   groupWeaponTypes: false,
   numericalScaling: false,
   sortBy: "totalAttack",
@@ -156,11 +162,17 @@ export default function useAppState() {
           ),
         }));
       },
+      setIncludeArcaneBonus(includeArcaneBonus) {
+        setAppState((prevAppState) => ({ ...prevAppState, includeArcaneBonus }));
+      },
       setEffectiveOnly(effectiveOnly) {
         setAppState((prevAppState) => ({ ...prevAppState, effectiveOnly }));
       },
       setSplitDamage(splitDamage) {
         setAppState((prevAppState) => ({ ...prevAppState, splitDamage }));
+      },
+      setShowBaseDamage(showBaseDamage) {
+        setAppState((prevAppState) => ({ ...prevAppState, showBaseDamage }));
       },
       setGroupWeaponTypes(groupWeaponTypes) {
         setAppState((prevAppState) => ({ ...prevAppState, groupWeaponTypes }));

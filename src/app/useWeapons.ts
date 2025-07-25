@@ -15,7 +15,7 @@ export default function useWeapons(regulationVersionName: RegulationVersionName)
       .fetch()
       .then((res) => res.json())
       .then((data) => {
-        setWeapons(decodeRegulationData(data));
+        setWeapons(decodeRegulationData(data, regulationVersions[regulationVersionName]));
         setLoading(false);
         setError(undefined);
       })

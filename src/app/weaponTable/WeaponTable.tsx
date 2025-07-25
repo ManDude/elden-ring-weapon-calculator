@@ -57,6 +57,11 @@ interface Props {
   splitDamage: boolean;
 
   /**
+   * If true, the columns for each individual damage type will display in the format "base + scaling" just like in the games
+   */
+  showBaseDamage: boolean;
+
+  /**
    * If true, include columns for each individual damage type for Spell Scaling
    */
   splitSpellScaling: boolean;
@@ -198,6 +203,7 @@ function WeaponTable({
   sortBy,
   reverse,
   splitDamage,
+  showBaseDamage,
   splitSpellScaling,
   numericalScaling,
   attackPowerTypes,
@@ -209,12 +215,13 @@ function WeaponTable({
     () =>
       getWeaponTableColumns({
         splitDamage,
+        showBaseDamage,
         splitSpellScaling,
         numericalScaling,
         attackPowerTypes,
         spellScaling,
       }),
-    [splitDamage, splitSpellScaling, numericalScaling, attackPowerTypes, spellScaling],
+    [splitDamage, showBaseDamage, splitSpellScaling, numericalScaling, attackPowerTypes, spellScaling],
   );
 
   return (

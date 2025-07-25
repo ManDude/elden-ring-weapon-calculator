@@ -106,8 +106,10 @@ export default function App() {
     weaponTypes,
     attributes,
     includeDLC,
+    includeArcaneBonus,
     effectiveOnly,
     splitDamage,
+    showBaseDamage,
     twoHanding,
     upgradeLevel,
     groupWeaponTypes,
@@ -120,8 +122,10 @@ export default function App() {
     setWeaponTypes,
     setAttribute,
     setIncludeDLC,
+    setIncludeArcaneBonus,
     setEffectiveOnly,
     setSplitDamage,
+    setShowBaseDamage,
     setTwoHanding,
     setUpgradeLevel,
     setGroupWeaponTypes,
@@ -151,6 +155,7 @@ export default function App() {
     weaponTypes,
     attributes,
     includeDLC,
+    includeArcaneBonus,
     effectiveOnly,
     twoHanding,
     upgradeLevel,
@@ -204,6 +209,7 @@ export default function App() {
         sortBy={sortBy}
         reverse={reverse}
         splitDamage={splitDamage}
+        showBaseDamage={showBaseDamage}
         splitSpellScaling={!!regulationVersion.splitSpellScaling}
         numericalScaling={numericalScaling}
         attackPowerTypes={attackPowerTypes}
@@ -218,6 +224,7 @@ export default function App() {
   // vanilla
   const showIncludeDLC = regulationVersionName === "latest";
   const includeDLCWeaponTypes = includeDLC || !showIncludeDLC;
+  const showIncludeArcaneBonus = regulationVersionName === "reforged";
 
   const weaponPickerOptions = useMemo(() => {
     const dedupedWeaponsByWeaponName = [
@@ -345,14 +352,19 @@ export default function App() {
             upgradeLevel={upgradeLevel}
             maxUpgradeLevel={regulationVersion.maxUpgradeLevel}
             splitDamage={splitDamage}
+            showBaseDamage={showBaseDamage}
             groupWeaponTypes={groupWeaponTypes}
             numericalScaling={numericalScaling}
+            includeArcaneBonus={includeArcaneBonus}
+            showIncludeArcaneBonus={showIncludeArcaneBonus}
             onAttributeChanged={setAttribute}
             onTwoHandingChanged={setTwoHanding}
             onUpgradeLevelChanged={setUpgradeLevel}
             onSplitDamageChanged={setSplitDamage}
+            onShowBaseDamageChanged={setShowBaseDamage}
             onGroupWeaponTypesChanged={setGroupWeaponTypes}
             onNumericalScalingChanged={setNumericalScaling}
+            onIncludeArcaneBonusChanged={setIncludeArcaneBonus}
           />
 
           <RegulationVersionAlert key={regulationVersionName}>

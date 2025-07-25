@@ -29,6 +29,7 @@ interface WeaponTableRowsOptions {
   weaponTypes: readonly WeaponType[];
   attributes: Attributes;
   includeDLC: boolean;
+  includeArcaneBonus: boolean;
   effectiveOnly: boolean;
   twoHanding: boolean;
   upgradeLevel: number;
@@ -72,6 +73,7 @@ const useWeaponTableRows = ({
   const affinityIds = useDeferredValue(options.affinityIds);
   const effectiveOnly = useDeferredValue(options.effectiveOnly);
   const includeDLC = useDeferredValue(options.includeDLC);
+  const includeArcaneBonus = useDeferredValue(options.includeArcaneBonus);
   const selectedWeapons = useDeferredValue(options.selectedWeapons);
 
   const specialUpgradeLevel = toSpecialUpgradeLevel(regularUpgradeLevel);
@@ -125,6 +127,7 @@ const useWeaponTableRows = ({
         twoHanding,
         upgradeLevel,
         disableTwoHandingAttackPowerBonus: regulationVersion.disableTwoHandingAttackPowerBonus,
+        includeArcaneBonus,
         ineffectiveAttributePenalty: regulationVersion.ineffectiveAttributePenalty,
       });
 
@@ -152,6 +155,7 @@ const useWeaponTableRows = ({
     weaponTypes,
     affinityIds,
     includeDLC,
+    includeArcaneBonus,
     effectiveOnly,
     uninfusableWeaponTypes,
     selectedWeapons,
