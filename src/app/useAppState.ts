@@ -131,7 +131,7 @@ export default function useAppState() {
 
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [appState.regulationVersionName]);
+  }, [appState.regulationVersionName, appState.ghPages]);
 
   const changeHandlers = useMemo<Omit<UpdateAppState, keyof AppState>>(
     () => ({
