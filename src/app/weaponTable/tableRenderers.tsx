@@ -73,9 +73,9 @@ export const ScalingRenderer = memo(function ScalingRenderer({
 }) {
   const scalingValue = attributeScaling[upgradeLevel][attribute];
   return scalingValue ? (
-    <span title={`${Math.round(scalingValue! * 100000) / 1000}%`}>
+    <span title={`${Math.round(scalingValue * 10000) / 100}%`}>
       {numerical
-        ? round(scalingValue * 100000) / 1000
+        ? `${Math.round(scalingValue * 10000) / 100}`
         : scalingTiers.find(([value]) => scalingValue >= value)?.[1]}
     </span>
   ) : (
