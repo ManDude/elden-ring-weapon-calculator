@@ -474,7 +474,7 @@ export default function getWeaponTableColumns({
     {
       key: "guardCutRate",
       sx: {
-        width: 50 * (allAttackPowerTypes.length + 1) + 27,
+        width: 54 * (allAttackPowerTypes.length + 1) + 27,
       },
       header: "Guard Properties",
       columns: [stabilityColumn, ...allAttackPowerTypes.map((damageType) => (cutRateColumns)[damageType])],
