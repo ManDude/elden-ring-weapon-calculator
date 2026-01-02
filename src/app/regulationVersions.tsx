@@ -4,8 +4,11 @@ import {
   affinityOptions,
   reforgedAffinityOptions,
   convergenceAffinityOptions,
+  getEnemyTypeLabel,
+  getReforgedEnemyTypeLabel,
   type AffinityOption,
 } from "./uiUtils.ts";
+import { WeakRateType } from "../calculator/weakRates.ts";
 
 export type RegulationVersionName = "latest" | "reforged" | "convergence" | "clevers";
 
@@ -15,6 +18,8 @@ export interface RegulationVersion {
   info?: ReactNode;
 
   affinityOptions: Map<number, AffinityOption>;
+
+  getEnemyTypeLabel: (type: WeakRateType) => string;
 
   /**
    * Hack: in Elden Ring Reforged there is no attack power bonus for two handing
@@ -54,6 +59,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
   latest: {
     name: "Patch 1.16 (latest)",
     affinityOptions,
+    getEnemyTypeLabel,
     fetch: () => fetch(`/regulation-vanilla-v1.14.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },
   reforged: {
@@ -72,6 +78,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
       </>
     ),
     affinityOptions: reforgedAffinityOptions,
+    getEnemyTypeLabel : getReforgedEnemyTypeLabel,
     disableTwoHandingAttackPowerBonus: true,
     ineffectiveAttributePenalty: 0.5,
     statusAdditionalCalcCorrectGraphId: 1007,
@@ -93,6 +100,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
       </>
     ),
     affinityOptions: convergenceAffinityOptions,
+    getEnemyTypeLabel,
     maxUpgradeLevel: 15,
     splitSpellScaling: true,
     fetch: () => fetch(`/regulation-convergence-v2.2.3.js?${import.meta.env.VITE_DATA_FORMAT}`),
@@ -113,6 +121,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
       </>
     ),
     affinityOptions,
+    getEnemyTypeLabel,
     disableWeaponTypeFilter: true,
     fetch: () => fetch(`/regulation-clevers-v25.0.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },

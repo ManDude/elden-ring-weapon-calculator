@@ -10,6 +10,7 @@ import {
   damageTypeIcons,
   damageTypeLabels,
   getAttributeLabel,
+  getReforgedEnemyTypeLabel,
   getShortAttributeLabel,
   getTotalDamageAttackPower,
 } from "../uiUtils.ts";
@@ -21,7 +22,10 @@ import {
   AttackPowerRenderer,
   AttackPowerWithBaseRenderer,
   CutRateRenderer,
+  BowDistRenderer,
+  WeakRateRenderer,
 } from "./tableRenderers.tsx";
+import { allWeakRateTypes } from "../../calculator/weakRates.ts";
 
 const nameColumn: WeaponTableColumnDef = {
   key: "name",
@@ -292,6 +296,28 @@ const numericalScalingColumns: WeaponTableColumnDef[] = allAttributes.map((attri
   },
 }));
 
+const weakRateReforgedColumns: WeaponTableColumnDef[] = allWeakRateTypes.map((type) => ({
+  key: `${type}WeakRate`,
+  sortBy: `${type}WeakRate`,
+  header: (
+    <Typography
+      component="span"
+      variant="subtitle2"
+      title={`Bonus vs. ${getReforgedEnemyTypeLabel(type)}`}
+    >
+      {getReforgedEnemyTypeLabel(type)}
+    </Typography>
+  ),
+  render([weapon]) {
+    return (
+      <WeakRateRenderer
+        weapon={weapon}
+        type={type}
+      />
+    );
+  },
+}));
+
 const requirementColumns = allAttributes.map(
   (attribute): WeaponTableColumnDef => ({
     key: `${attribute}Requirement`,
@@ -318,6 +344,24 @@ const requirementColumns = allAttributes.map(
 );
 
 const miscColumns: WeaponTableColumnDef[] = [
+  {
+    key: "crit",
+    sortBy: "crit",
+    header: (
+      <Typography
+        component="span"
+        variant="subtitle2"
+        title={"Critical Damage"}
+      >
+        Critical
+      </Typography>
+    ),
+    render([weapon]) {
+      return (
+        <>{Math.round(weapon.crit + 100)}</>
+      );
+    },
+  },
   {
     key: "poise",
     sortBy: "poise",
@@ -355,20 +399,40 @@ const miscColumns: WeaponTableColumnDef[] = [
     },
   },
   {
-    key: "crit",
-    sortBy: "crit",
+    key: "stamCost",
+    sortBy: "stamCost",
     header: (
       <Typography
         component="span"
         variant="subtitle2"
-        title={"Critical Damage"}
+        title={"Stamina Cost"}
       >
-        Critical
+        Stamina Cost
       </Typography>
     ),
     render([weapon]) {
       return (
-        <>{Math.round(weapon.crit + 100)}</>
+        <>{Math.round(weapon.stamCost * 100)}%</>
+      );
+    },
+  },
+  {
+    key: "bowDist",
+    sortBy: "bowDist",
+    header: (
+      <Typography
+        component="span"
+        variant="subtitle2"
+        title={"Range Modifier"}
+      >
+        Range
+      </Typography>
+    ),
+    render([weapon]) {
+      return (
+        <BowDistRenderer
+          value={weapon.bowDist}
+        />
       );
     },
   },
@@ -482,10 +546,18 @@ export default function getWeaponTableColumns({
     {
       key: "misc",
       sx: {
-        width: 60 * miscColumns.length + 21,
+        width: 64 * miscColumns.length + 21,
       },
       header: "Other Properties",
       columns: miscColumns,
+    },
+    {
+      key: "weakRate",
+      sx: {
+        width: 64 * weakRateReforgedColumns.length + 21,
+      },
+      header: "Enemy Type Damage",
+      columns: weakRateReforgedColumns,
     },
   ];
 }

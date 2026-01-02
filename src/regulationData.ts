@@ -71,9 +71,12 @@ export interface EncodedWeaponJson {
   calcCorrectGraphIds?: Partial<Record<AttackPowerType, number>>;
   poise: number;
   stamDmg: number;
+  stamCost: number;
+  bowDist: number;
   crit: number;
   guardCutRate: (readonly [AttackPowerType, number])[];
   stability: number;
+  weakRate: number[];
   paired?: boolean;
   sorceryTool?: boolean;
   incantationTool?: boolean;

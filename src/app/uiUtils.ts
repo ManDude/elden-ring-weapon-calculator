@@ -48,6 +48,7 @@ import frostStatusIcon from "./img/frostStatus.webp";
 import poisonStatusIcon from "./img/poisonStatus.webp";
 import bleedStatusIcon from "./img/bleedStatus.webp";
 import deathBlightStatusIcon from "./img/deathBlightStatus.webp";
+import { WeakRateType } from "../calculator/weakRates.ts";
 
 export interface AffinityOption {
   text: string;
@@ -312,6 +313,40 @@ export function getShortAttributeLabel(attribute: Attribute) {
       return "Fai";
     case "arc":
       return "Arc";
+  }
+}
+
+export function getEnemyTypeLabel(type: WeakRateType) {
+  switch(type) {
+    case WeakRateType.A:
+      return "A";
+    case WeakRateType.B:
+      return "B";
+    case WeakRateType.C:
+      return "C";
+    case WeakRateType.D:
+      return "D";
+    case WeakRateType.E:
+      return "E";
+    case WeakRateType.F:
+      return "F";
+  }
+}
+
+export function getReforgedEnemyTypeLabel(type: WeakRateType) {
+  switch(type) {
+    case WeakRateType.A:
+      return "Void";
+    case WeakRateType.B:
+      return "Undead";
+    case WeakRateType.C:
+      return "Beast";
+    case WeakRateType.D:
+      return "Dragon";
+    case WeakRateType.E:
+      return "Stone";
+    case WeakRateType.F:
+      return "Divine";
   }
 }
 

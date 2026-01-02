@@ -78,6 +78,16 @@ export interface Weapon {
   stamDmg: number;
 
   /**
+   * Stamina consumption rate of the weapon
+   */
+  stamCost: number;
+
+  /**
+   * Range modifier (bows etc) of the weapon
+   */
+  bowDist: number;
+
+  /**
    * Critical attack percentage
    */
   crit: number;
@@ -91,6 +101,11 @@ export interface Weapon {
    * Guard boost/stability percentage at each upgrade level
    */
   stability?: number[];
+
+  /**
+   * Damage multiplier vs. specific types of enemies
+   */
+  weakRate: number[];
 
   /**
    * True if the weapon doesn't get a strength bonus when two-handing

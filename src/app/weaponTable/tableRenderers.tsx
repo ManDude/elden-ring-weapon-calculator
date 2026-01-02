@@ -176,14 +176,14 @@ export const AttackPowerWithBaseRenderer = memo(function AttackPowerWithBaseRend
 });
 
 /**
- * Component that displays one cut rate (guard negation) for a damage type of a weapon.
+ * Component that displays one cut rate (guard negation) for a damage type of a weapon. Also guard stability.
  */
 export const CutRateRenderer = memo(function CutRateRenderer({
   value,
 }: {
   value?: number;
 }) {
-  if (value == null) {
+  if (value == null || value == 0) {
     return blankIcon;
   }
 
@@ -191,4 +191,36 @@ export const CutRateRenderer = memo(function CutRateRenderer({
     <span title={`${value}%`}>
       {`${Math.round(value * 10) / 10}%`}
     </span>);
+});
+
+/**
+ * Component that displays the range modifier of a weapon.
+ */
+export const BowDistRenderer = memo(function BowDistRenderer({
+  value,
+}: {
+  value: number;
+}) {
+  if (value == -1) {
+    return blankIcon;
+  }
+
+  return (<>{value+100}%</>);
+});
+
+/**
+ * Component that displays the damage bonus vs. a specific type of enemy
+ */
+export const WeakRateRenderer = memo(function WeakRateRenderer({
+  weapon: { weakRate },
+  type
+}: {
+  weapon: Weapon;
+  type: number;
+}) {
+  if (weakRate[type] == 1) {
+    return blankIcon;
+  }
+
+  return (<>{round((weakRate[type]-1)*100*100)/100}%</>);
 });
