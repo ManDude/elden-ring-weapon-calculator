@@ -220,9 +220,9 @@ export default function App() {
     );
   }
 
-  // The Convergence and Reforged don't separate DLC content, so this option is only relevant to
-  // vanilla
-  const showIncludeDLC = regulationVersionName === "latest";
+  // The Convergence doesn't separate DLC content, so this option is only relevant to
+  // vanilla and Reforged
+  const showIncludeDLC = regulationVersionName === "latest" || regulationVersionName === "reforged";
   const includeDLCWeaponTypes = includeDLC || !showIncludeDLC;
   const showIncludeArcaneBonus = regulationVersionName === "reforged";
 

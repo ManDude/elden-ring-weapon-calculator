@@ -46,7 +46,7 @@ interface UpdateAppState extends AppState {
 }
 
 const defaultAppState: AppState = {
-  regulationVersionName: "reforged",
+  regulationVersionName: "latest",
   attributes: {
     str: 30,
     dex: 30,
@@ -86,11 +86,11 @@ function getInitialAppState() {
     /* ignored */
   }
 
-  // appState.ghPages = window.location.pathname.substring(1) === "elden-ring-weapon-calculator";
-  // const regulationVersionName = window.location.pathname.substring(appState.ghPages ? 2 : 1);
-  // if (regulationVersionName && regulationVersionName in regulationVersions) {
-  //   appState.regulationVersionName = regulationVersionName as RegulationVersionName;
-  // }
+  appState.ghPages = window.location.pathname.substring(1) === "elden-ring-weapon-calculator";
+  const regulationVersionName = window.location.pathname.substring(appState.ghPages ? 2 : 1);
+  if (regulationVersionName && regulationVersionName in regulationVersions) {
+    appState.regulationVersionName = regulationVersionName as RegulationVersionName;
+  }
 
   return appState;
 }

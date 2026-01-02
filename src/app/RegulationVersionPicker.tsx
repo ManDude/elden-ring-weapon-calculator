@@ -24,7 +24,7 @@ function RegulationVersionPicker({ regulationVersionName, onRegulationVersionNam
           onRegulationVersionNameChanged(evt.target.value as RegulationVersionName);
         }}
       >
-        {Object.entries(regulationVersions).filter(([key]) => key === "reforged").map(([key, { name }]) => (
+        {Object.entries(regulationVersions).filter(([key]) => key === "reforged" || key === "latest").map(([key, { name }]) => (
           <MenuItem key={key} value={key}>
             {name}
           </MenuItem>

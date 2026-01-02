@@ -60,7 +60,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
     name: "Patch 1.16 (latest)",
     affinityOptions,
     getEnemyTypeLabel,
-    fetch: () => fetch(`/regulation-vanilla-v1.14.js?${import.meta.env.VITE_DATA_FORMAT}`),
+    fetch: () => fetch(`/regulation-vanilla-v1.16.1.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },
   reforged: {
     name: "ELDEN RING Reforged",
