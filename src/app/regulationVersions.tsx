@@ -57,7 +57,7 @@ export interface RegulationVersion {
 
 const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
   latest: {
-    name: "Patch 1.16 (latest)",
+    name: "Patch 1.16.1 (latest)",
     affinityOptions,
     getEnemyTypeLabel,
     fetch: () => fetch(`./regulation-vanilla-v1.16.1.js?${import.meta.env.VITE_DATA_FORMAT}`),

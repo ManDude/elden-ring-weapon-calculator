@@ -254,6 +254,14 @@ const urlOverrides = new Map<number, string | undefined>(
         [23150000, "https://eldenring.wiki.gg/wiki/Rotten_Greataxe"], // Rotten Duelist Greataxe
         [33210000, "https://eldenring.wiki.gg/Carian_Glintstone_Staff"], // Dark Glintstone Staff
         [33300000, "https://err.fandom.com/wiki/Snow_Witch_Scepter"], // Snow Witch Scepter
+        [2270000, "https://err.fandom.com/wiki/Gladius_of_Ophidion"], // Gladius of Ophidion
+        [2280000, "https://err.fandom.com/wiki/Coilheart"], // Coilheart
+        [2130000, "https://err.fandom.com/wiki/Flamelost_War_Sword"], // Flamelost War Sword
+        [4090000, "https://err.fandom.com/wiki/Flamelost_Greatblades"], // Flamelost Greatblades
+        [16190000, "https://err.fandom.com/wiki/Flamelost_War_Spear"], // Flamelost War Spear
+        [31200000, "https://err.fandom.com/wiki/Mad_Sun_Shield"], // Mad Sun Shield
+        [33310000, "https://err.fandom.com/wiki/Twinbird_Caduceus"], // Twinbird Caduceus
+        [8120000, "https://err.fandom.com/wiki/Putrescent_Bonesmasher"], // Putrescent Bonesmasher
       ]
     : isConvergence
     ? [
@@ -490,6 +498,7 @@ function isUniqueWeapon(row: ParamRow) {
 const unobtainableWeapons = new Set(
   isReforged
     ? [
+        4540000, // Moonrithyll Knight's Sword
         4550000, // Greatsword of Radahn (Dumb)
         17080000, // Vyke's War Spear
         33290000, // ST Staff
