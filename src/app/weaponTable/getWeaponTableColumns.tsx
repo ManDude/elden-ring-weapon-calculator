@@ -559,5 +559,10 @@ export default function getWeaponTableColumns({
       header: "Enemy Type Damage",
       columns: weakRateReforgedColumns,
     },
+    {
+      key: "name",
+      sx: { flex: 1, minWidth: 320 },
+      columns: [nameColumn],
+    },
   ];
 }
