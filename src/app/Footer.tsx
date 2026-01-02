@@ -5,7 +5,7 @@ function Footer() {
   return (
     <Typography component="div" variant="body1" align="center">
       <h1 style={{ display: "inline", font: "inherit", margin: 0, padding: 0 }}>
-        Elden Ring Weapon Attack Calculator - optimize any weapon or build for ELDEN RING Reforged.
+        Elden Ring Weapon Attack Calculator - optimize any weapon or build for ELDEN RING.
       </h1>
       <br />
       Edited version from the original by Tom Clark (
