@@ -75,7 +75,7 @@ export const ScalingRenderer = memo(function ScalingRenderer({
   return scalingValue ? (
     <span title={`${Math.round(scalingValue * 1000000) / 10000}%`}>
       {numerical
-        ? `${Math.round(scalingValue * 100000) / 1000}`
+        ? `${Math.round(scalingValue * 10000) / 100}`
         : scalingTiers.find(([value]) => scalingValue >= value)?.[1]}
     </span>
   ) : (
@@ -173,4 +173,22 @@ export const AttackPowerWithBaseRenderer = memo(function AttackPowerWithBaseRend
   }
 
   return <>{round(valueBase)} + {round(value-valueBase)}</>;
+});
+
+/**
+ * Component that displays one cut rate (guard negation) for a damage type of a weapon.
+ */
+export const CutRateRenderer = memo(function CutRateRenderer({
+  value,
+}: {
+  value?: number;
+}) {
+  if (value == null) {
+    return blankIcon;
+  }
+
+  return (
+    <span title={`${value}%`}>
+      {`${Math.round(value * 10) / 10}%`}
+    </span>);
 });

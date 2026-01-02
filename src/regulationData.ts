@@ -22,6 +22,8 @@ export type CalcCorrectGraph = {
 export interface ReinforceParamWeapon {
   attack: Partial<Record<AttackPowerType, number>>;
   attributeScaling: Record<Attribute, number>;
+  guardCutRate: Partial<Record<AttackPowerType, number>>;
+  stability: number;
   statusSpEffectId1?: number;
   statusSpEffectId2?: number;
   statusSpEffectId3?: number;
@@ -70,6 +72,8 @@ export interface EncodedWeaponJson {
   poise: number;
   stamDmg: number;
   crit: number;
+  guardCutRate: (readonly [AttackPowerType, number])[];
+  stability: number;
   paired?: boolean;
   sorceryTool?: boolean;
   incantationTool?: boolean;
@@ -157,6 +161,8 @@ export function decodeRegulationData({
       statusSpEffectParamIds,
       attack: unupgradedAttack,
       attributeScaling: unupgradedAttributeScaling,
+      guardCutRate: unupgradedGuardCutRate,
+      stability: unupgradedStability,
       dlc = false,
       ...weapon
     }): Weapon => {
@@ -234,6 +240,24 @@ export function decodeRegulationData({
         return attributeScalingAtUpgradeLevel;
       });
 
+      // Using the base unupgraded guard cut rate and ReinforceParamWeapon for this weapon, calculate the
+      // guard cut rate at each upgrade level
+      const guardCutRate: Weapon["guardCutRate"] = reinforceParams.map((reinforceParam) => {
+        const guardCutRateAtUpgradeLevel: Weapon["guardCutRate"][number] = {};
+        unupgradedGuardCutRate.forEach(([attackPowerType, unupgradedGuard]) => {
+          guardCutRateAtUpgradeLevel[attackPowerType] =
+            unupgradedGuard * (reinforceParam.guardCutRate[attackPowerType] ?? 0);
+        });
+
+        return guardCutRateAtUpgradeLevel;
+      });
+
+      // Using the base stability and ReinforceParamWeapon for this weapon, calculate the
+      // stability at each upgrade level
+      const stability: Weapon["stability"] = reinforceParams.map((reinforceParam) => {
+        return unupgradedStability * reinforceParam.stability;
+      });
+
       return {
         ...weapon,
         url:
@@ -242,6 +266,8 @@ export function decodeRegulationData({
             : weapon.url,
         attack,
         attributeScaling,
+        guardCutRate,
+        stability,
         attackElementCorrect,
         calcCorrectGraphs: weaponCalcCorrectGraphs,
         statusAdditionalCalcCorrectGraph: regulationVersion.statusAdditionalCalcCorrectGraphId !== undefined ? getCalcCorrectGraph(regulationVersion.statusAdditionalCalcCorrectGraphId) : undefined,

@@ -12,7 +12,9 @@ export type SortBy =
   | "sortBy"
   | `${AttackPowerType}SpellScaling`
   | `${Attribute}Scaling`
-  | `${Attribute}Requirement`;
+  | `${Attribute}Requirement`
+  | `${AttackPowerType}GuardCutRate`
+  | "stability";
 
 /**
  * Sort and paginate a filtered list of weapons for display in the weapon table
@@ -43,6 +45,10 @@ export function sortWeapons(
       return ([weapon]) => -weapon.crit;
     }
 
+    if (sortBy === "stability") {
+      return ([, { stability }]) => -stability;
+    }
+
     if (sortBy.endsWith("Attack")) {
       const attackPowerType = +sortBy.slice(0, -1 * "Attack".length) as AttackPowerType;
       return ([, { attackPower }]) => -(attackPower[attackPowerType] ?? 0);
@@ -62,6 +68,11 @@ export function sortWeapons(
     if (sortBy.endsWith("Requirement")) {
       const attribute = sortBy.slice(0, -1 * "Requirement".length) as Attribute;
       return ([weapon]) => -(weapon.requirements[attribute] ?? 0);
+    }
+
+    if (sortBy.endsWith("GuardCutRate")) {
+      const attackPowerType = +sortBy.slice(0, -1 * "GuardCutRate".length) as AttackPowerType;
+      return ([, { guardCutRate }]) => -(guardCutRate[attackPowerType] ?? 0);
     }
 
     return () => "";

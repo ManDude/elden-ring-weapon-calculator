@@ -20,6 +20,7 @@ import {
   AttributeRequirementRenderer,
   AttackPowerRenderer,
   AttackPowerWithBaseRenderer,
+  CutRateRenderer,
 } from "./tableRenderers.tsx";
 
 const nameColumn: WeaponTableColumnDef = {
@@ -109,6 +110,53 @@ const attackWithBaseColumns = Object.fromEntries(
     },
   ]),
 ) as Record<AttackPowerType, WeaponTableColumnDef>;
+
+const cutRateColumns = Object.fromEntries(
+  allAttackPowerTypes.map((attackPowerType): [AttackPowerType, WeaponTableColumnDef] => [
+    attackPowerType,
+    {
+      key: `${attackPowerType}GuardCutRate`,
+      sortBy: `${attackPowerType}GuardCutRate`,
+      header: damageTypeIcons.has(attackPowerType) ? (
+        <img
+          src={damageTypeIcons.get(attackPowerType)!}
+          alt={damageTypeLabels.get(attackPowerType)!}
+          title={damageTypeLabels.get(attackPowerType)!}
+          width={24}
+          height={24}
+        />
+      ) : (
+        <Typography component="span" variant="subtitle2">
+          {damageTypeLabels.get(attackPowerType)}
+        </Typography>
+      ),
+      render([, { guardCutRate }]) {
+        return (
+          <CutRateRenderer
+            value={guardCutRate[attackPowerType]}
+          />
+        );
+      },
+    },
+  ]),
+) as Record<AttackPowerType, WeaponTableColumnDef>;
+
+const stabilityColumn: WeaponTableColumnDef = {
+  key: "stability",
+  sortBy: "stability",
+  header: (
+    <Typography component="span" variant="subtitle2">
+      Stability
+    </Typography>
+  ),
+  render([, { stability }]) {
+    return (
+      <CutRateRenderer
+        value={stability}
+      />
+    );
+  },
+};
 
 const splitSpellScalingColumns: WeaponTableColumnDef[] = allDamageTypes.map((damageType) => ({
   key: `${damageType}SpellScaling`,
@@ -410,18 +458,10 @@ export default function getWeaponTableColumns({
     {
       key: "scaling",
       sx: {
-        width: (numericalScaling ? 55 : 36) * scalingColumns.length + 21,
+        width: (numericalScaling ? 54 : 36) * scalingColumns.length + 21,
       },
       header: "Attribute Scaling",
       columns: numericalScaling ? numericalScalingColumns : scalingColumns,
-    },
-    {
-      key: "misc",
-      sx: {
-        width: 60 * miscColumns.length + 21,
-      },
-      header: "Other Properties",
-      columns: miscColumns,
     },
     {
       key: "requirements",
@@ -430,6 +470,22 @@ export default function getWeaponTableColumns({
       },
       header: "Attributes Required",
       columns: requirementColumns,
+    },
+    {
+      key: "guardCutRate",
+      sx: {
+        width: 50 * (allAttackPowerTypes.length + 1) + 27,
+      },
+      header: "Guard Properties",
+      columns: [stabilityColumn, ...allAttackPowerTypes.map((damageType) => (cutRateColumns)[damageType])],
+    },
+    {
+      key: "misc",
+      sx: {
+        width: 60 * miscColumns.length + 21,
+      },
+      header: "Other Properties",
+      columns: miscColumns,
     },
   ];
 }

@@ -676,6 +676,28 @@ function parseWeapon(row: ParamRow): EncodedWeaponJson | null {
     return false;
   });
 
+  const guardCutRate: (readonly [AttackPowerType, number])[] = (
+    [
+      [AttackPowerType.PHYSICAL, row.physGuardCutRate],
+      [AttackPowerType.MAGIC, row.magGuardCutRate],
+      [AttackPowerType.FIRE, row.thunGuardCutRate],
+      [AttackPowerType.LIGHTNING, row.thunGuardCutRate],
+      [AttackPowerType.HOLY, row.darkGuardCutRate],
+      [AttackPowerType.POISON, row.poisonGuardResist],
+      [AttackPowerType.SCARLET_ROT, row.diseaseGuardResist],
+      [AttackPowerType.BLEED, row.bloodGuardResist],
+      [AttackPowerType.DEATH_BLIGHT, row.curseGuardResist],
+      [AttackPowerType.FROST, row.freezeGuardResist],
+      [AttackPowerType.MADNESS, row.madnessGuardResist],
+      [AttackPowerType.SLEEP, row.sleepGuardResist],
+    ] as const
+  ).filter(([, attackPower]) => {
+    if (attackPower) {
+      return true;
+    }
+    return false;
+  });
+
   // Spells use a CalcCorrectGraph based on the type of damage they deal. These are normally the
   // same, but The Convergence has different CalcCorrectGraphs to give spell tools varying
   // effectiveness with different damage types.
@@ -765,6 +787,8 @@ function parseWeapon(row: ParamRow): EncodedWeaponJson | null {
     poise: row.saWeaponDamage,
     stamDmg: row.attackBaseStamina,
     crit: row.throwAtkRate,
+    guardCutRate,
+    stability: row.staminaGuardDef,
     paired: ifNotDefault(row.isDualBlade === 1, false),
     sorceryTool: ifNotDefault(row.enableMagic === 1, false),
     incantationTool: ifNotDefault(row.enableMiracle === 1, false),
@@ -863,6 +887,21 @@ function parseReinforceParamWeapon(row: ParamRow): ReinforceParamWeapon {
       [AttackPowerType.LIGHTNING]: row.thunderAtkRate,
       [AttackPowerType.HOLY]: row.darkAtkRate,
     },
+    guardCutRate: {
+      [AttackPowerType.PHYSICAL]: row.physicsGuardCutRate,
+      [AttackPowerType.MAGIC]: row.magicGuardCutRate,
+      [AttackPowerType.FIRE]: row.fireGuardCutRate,
+      [AttackPowerType.LIGHTNING]: row.thunderGuardCutRate,
+      [AttackPowerType.HOLY]: row.darkGuardCutRate,
+      [AttackPowerType.POISON]: row.poisonGuardResistRate,
+      [AttackPowerType.SCARLET_ROT]: row.diseaseGuardResistRate,
+      [AttackPowerType.BLEED]: row.bloodGuardResistRate,
+      [AttackPowerType.DEATH_BLIGHT]: row.curseGuardResistRate,
+      [AttackPowerType.FROST]: row.freezeGuardDefRate,
+      [AttackPowerType.MADNESS]: row.madnessGuardDefRate,
+      [AttackPowerType.SLEEP]: row.sleepGuardDefRate,
+    },
+    stability: row.staminaGuardDefRate,
     attributeScaling: {
       str: row.correctStrengthRate,
       dex: row.correctAgilityRate,

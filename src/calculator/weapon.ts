@@ -83,6 +83,16 @@ export interface Weapon {
   crit: number;
 
   /**
+   * Guarded damage negation percentage at each upgrade level
+   */
+  guardCutRate: Partial<Record<AttackPowerType, number>>[];
+
+  /**
+   * Guard boost/stability percentage at each upgrade level
+   */
+  stability?: number[];
+
+  /**
    * True if the weapon doesn't get a strength bonus when two-handing
    */
   paired?: boolean;

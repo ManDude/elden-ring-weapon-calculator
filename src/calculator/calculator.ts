@@ -18,6 +18,8 @@ export interface WeaponAttackResult {
   baseAttackPower: Partial<Record<AttackPowerType, number>>;
   attackPower: Partial<Record<AttackPowerType, number>>;
   spellScaling: Partial<Record<AttackPowerType, number>>;
+  guardCutRate: Partial<Record<AttackPowerType, number>>;
+  stability: number;
   ineffectiveAttributes: Attribute[];
   ineffectiveAttackPowerTypes: AttackPowerType[];
 }
@@ -85,9 +87,13 @@ export default function getWeaponAttack({
   const baseAttackPower: Partial<Record<AttackPowerType, number>> = {};
   const attackPower: Partial<Record<AttackPowerType, number>> = {};
   const spellScaling: Partial<Record<AttackPowerType, number>> = {};
+  const guardCutRate: Partial<Record<AttackPowerType, number>> = {};
+  const stability = weapon.stability ? weapon.stability[upgradeLevel] : 0;
 
   for (const attackPowerType of [...allDamageTypes, ...allStatusTypes]) {
     const isDamageType = allDamageTypes.includes(attackPowerType);
+
+    guardCutRate[attackPowerType] = weapon.guardCutRate[upgradeLevel][attackPowerType];
 
     const currentBaseAttackPower = weapon.attack[upgradeLevel][attackPowerType] ?? 0;
     if (currentBaseAttackPower || weapon.sorceryTool || weapon.incantationTool) {
@@ -147,6 +153,8 @@ export default function getWeaponAttack({
     upgradeLevel,
     baseAttackPower,
     attackPower,
+    guardCutRate,
+    stability,
     spellScaling,
     ineffectiveAttributes,
     ineffectiveAttackPowerTypes,
