@@ -60,7 +60,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
     name: "Patch 1.16 (latest)",
     affinityOptions,
     getEnemyTypeLabel,
-    fetch: () => fetch(`/regulation-vanilla-v1.16.1.js?${import.meta.env.VITE_DATA_FORMAT}`),
+    fetch: () => fetch(`./regulation-vanilla-v1.16.1.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },
   reforged: {
     name: "ELDEN RING Reforged",
@@ -103,7 +103,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
     getEnemyTypeLabel,
     maxUpgradeLevel: 15,
     splitSpellScaling: true,
-    fetch: () => fetch(`/regulation-convergence-v2.2.3.js?${import.meta.env.VITE_DATA_FORMAT}`),
+    fetch: () => fetch(`./regulation-convergence-v2.2.3.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },
   clevers: {
     name: "Clever's Moveset Modpack",
@@ -123,7 +123,7 @@ const regulationVersions: Record<RegulationVersionName, RegulationVersion> = {
     affinityOptions,
     getEnemyTypeLabel,
     disableWeaponTypeFilter: true,
-    fetch: () => fetch(`/regulation-clevers-v25.0.js?${import.meta.env.VITE_DATA_FORMAT}`),
+    fetch: () => fetch(`./regulation-clevers-v25.0.js?${import.meta.env.VITE_DATA_FORMAT}`),
   },
 };
 
