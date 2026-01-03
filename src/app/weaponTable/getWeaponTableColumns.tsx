@@ -25,7 +25,7 @@ import {
   BowDistRenderer,
   WeakRateRenderer,
 } from "./tableRenderers.tsx";
-import { allWeakRateTypes } from "../../calculator/weakRates.ts";
+import { allWeakRateTypes, WeakRateType } from "../../calculator/weakRates.ts";
 
 const nameColumn: WeaponTableColumnDef = {
   key: "name",
@@ -444,6 +444,7 @@ interface WeaponTableColumnsOptions {
   splitSpellScaling: boolean;
   numericalScaling: boolean;
   attackPowerTypes: ReadonlySet<AttackPowerType>;
+  weakRateTypes: ReadonlySet<WeakRateType>;
   spellScaling: boolean;
 }
 
@@ -453,10 +454,14 @@ export default function getWeaponTableColumns({
   splitSpellScaling,
   numericalScaling,
   attackPowerTypes,
+  weakRateTypes,
   spellScaling,
 }: WeaponTableColumnsOptions): WeaponTableColumnGroupDef[] {
   const includedStatusTypes = allStatusTypes.filter((statusType) =>
     attackPowerTypes.has(statusType),
+  );
+  const includedWeakRateTypes = allWeakRateTypes.filter((weakRateType) =>
+    weakRateTypes.has(weakRateType),
   );
 
   let spellScalingColumnGroup: WeaponTableColumnGroupDef | undefined;
@@ -490,34 +495,34 @@ export default function getWeaponTableColumns({
     ...(spellScalingColumnGroup ? [spellScalingColumnGroup] : []),
     splitDamage
       ? {
-          key: "attack",
-          sx: {
-            width: (showBaseDamage ? 85 : 40) * (allDamageTypes.length + 1) + 27,
-          },
-          header: "Attack Power",
-          columns: [
-            ...allDamageTypes.map((damageType) => (showBaseDamage ? attackWithBaseColumns : attackColumns)[damageType]),
-            totalSplitAttackPowerColumn,
-          ],
-        }
-      : {
-          key: "attack",
-          sx: {
-            width: 128,
-          },
-          columns: [totalAttackPowerColumn],
+        key: "attack",
+        sx: {
+          width: (showBaseDamage ? 85 : 40) * (allDamageTypes.length + 1) + 27,
         },
+        header: "Attack Power",
+        columns: [
+          ...allDamageTypes.map((damageType) => (showBaseDamage ? attackWithBaseColumns : attackColumns)[damageType]),
+          totalSplitAttackPowerColumn,
+        ],
+      }
+      : {
+        key: "attack",
+        sx: {
+          width: 128,
+        },
+        columns: [totalAttackPowerColumn],
+      },
     ...(includedStatusTypes.length > 0
       ? [
-          {
-            key: "statusEffects",
-            sx: {
-              width: Math.max(40 * includedStatusTypes.length + 21, 141),
-            },
-            header: "Status Effects",
-            columns: includedStatusTypes.map((statusType) => attackColumns[statusType]),
+        {
+          key: "statusEffects",
+          sx: {
+            width: Math.max(40 * includedStatusTypes.length + 21, 141),
           },
-        ]
+          header: "Status Effects",
+          columns: includedStatusTypes.map((statusType) => attackColumns[statusType]),
+        },
+      ]
       : []),
     {
       key: "scaling",
@@ -551,14 +556,18 @@ export default function getWeaponTableColumns({
       header: "Guard Properties",
       columns: [stabilityColumn, ...allAttackPowerTypes.map((damageType) => (cutRateColumns)[damageType])],
     },
-    {
-      key: "weakRate",
-      sx: {
-        width: 64 * weakRateReforgedColumns.length + 21,
-      },
-      header: "Enemy Type Damage",
-      columns: weakRateReforgedColumns,
-    },
+    ...(includedWeakRateTypes.length > 0 ?
+      [
+        {
+          key: "weakRate",
+          sx: {
+            width: 64 * includedWeakRateTypes.length + 21,
+          },
+          header: "Enemy Type Damage",
+          columns: includedWeakRateTypes.map((weakRateType) => weakRateReforgedColumns[weakRateType]),
+        }
+      ]
+      : []),
     {
       key: "name",
       sx: { flex: 1, minWidth: 320 },

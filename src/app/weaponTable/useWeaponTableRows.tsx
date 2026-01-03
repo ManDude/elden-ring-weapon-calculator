@@ -17,6 +17,7 @@ import {
   toSpecialUpgradeLevel,
 } from "../uiUtils.ts";
 import type { WeaponOption } from "../WeaponPicker.tsx";
+import { allWeakRateTypes, type WeakRateType } from "../../calculator/weakRates.ts";
 
 interface WeaponTableRowsOptions {
   weapons: readonly Weapon[];
@@ -43,6 +44,9 @@ interface WeaponTableRowsResult {
 
   /** Attack power types included in at least one weapon in the filtered results */
   attackPowerTypes: ReadonlySet<AttackPowerType>;
+
+  /** Weak rate types included in at least one weapon in the filtered results */
+  weakRateTypes: ReadonlySet<WeakRateType>;
 
   /**True if at least one weapon in the filtered results can cast spells */
   spellScaling: boolean;
@@ -90,10 +94,11 @@ const useWeaponTableRows = ({
     return tmp;
   }, [weapons]);
 
-  const [filteredRows, attackPowerTypes, spellScaling] = useMemo<
-    [WeaponTableRowData[], Set<AttackPowerType>, boolean]
+  const [filteredRows, attackPowerTypes, weakRateTypes, spellScaling] = useMemo<
+    [WeaponTableRowData[], Set<AttackPowerType>, Set<WeakRateType>, boolean]
   >(() => {
     const includedDamageTypes = new Set<AttackPowerType>();
+    const includedWeakRateTypes = new Set<WeakRateType>();
     let includeSpellScaling = false;
 
     const filteredWeapons = filterWeapons(weapons, {
@@ -137,6 +142,12 @@ const useWeaponTableRows = ({
         }
       }
 
+      for (const weakRateType of allWeakRateTypes) {
+        if (weapon.weakRate[weakRateType] != 1) {
+          includedWeakRateTypes.add(weakRateType);
+        }
+      }
+
       if (weapon.sorceryTool || weapon.incantationTool) {
         includeSpellScaling = true;
       }
@@ -144,7 +155,7 @@ const useWeaponTableRows = ({
       return [weapon, weaponAttackResult];
     });
 
-    return [rows, includedDamageTypes, includeSpellScaling];
+    return [rows, includedDamageTypes, includedWeakRateTypes, includeSpellScaling];
   }, [
     attributes,
     twoHanding,
@@ -166,6 +177,12 @@ const useWeaponTableRows = ({
     () => attackPowerTypes,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [[...attackPowerTypes].sort().join(",")],
+  );
+
+  const memoizedWeakRateTypes = useMemo(
+    () => weakRateTypes,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [[...weakRateTypes].sort().join(",")],
   );
 
   const rowGroups = useMemo<WeaponTableRowGroup[]>(() => {
@@ -202,6 +219,7 @@ const useWeaponTableRows = ({
   return {
     rowGroups,
     attackPowerTypes: memoizedAttackPowerTypes,
+    weakRateTypes: memoizedWeakRateTypes,
     spellScaling,
     total: filteredRows.length,
   };

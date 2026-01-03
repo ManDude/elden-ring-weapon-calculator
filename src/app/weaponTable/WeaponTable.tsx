@@ -20,6 +20,7 @@ import {
   WeaponTableGroup,
   WeaponTableGroupHeaderRow,
 } from "./tableStyledComponents.tsx";
+import type { WeakRateType } from "../../calculator/weakRates.ts";
 
 export type WeaponTableRowData = [Weapon, WeaponAttackResult];
 
@@ -75,6 +76,11 @@ interface Props {
    * Attack power types that must be included as columns in the table
    */
   attackPowerTypes: ReadonlySet<AttackPowerType>;
+
+  /**
+   * Weak rate types that must be included as columns in the table
+   */
+  weakRateTypes: ReadonlySet<WeakRateType>;
 
   /**
    * Include spell scaling columns in the table
@@ -207,6 +213,7 @@ function WeaponTable({
   splitSpellScaling,
   numericalScaling,
   attackPowerTypes,
+  weakRateTypes,
   spellScaling,
   onSortByChanged,
   onReverseChanged,
@@ -219,9 +226,10 @@ function WeaponTable({
         splitSpellScaling,
         numericalScaling,
         attackPowerTypes,
+        weakRateTypes,
         spellScaling,
       }),
-    [splitDamage, showBaseDamage, splitSpellScaling, numericalScaling, attackPowerTypes, spellScaling],
+    [splitDamage, showBaseDamage, splitSpellScaling, numericalScaling, attackPowerTypes, weakRateTypes, spellScaling],
   );
 
   return (
