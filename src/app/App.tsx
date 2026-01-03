@@ -203,6 +203,7 @@ export default function App() {
   } else {
     mainContent = (
       <WeaponTable
+        regulationVersionName={regulationVersionName}
         rowGroups={rowGroups}
         placeholder={tablePlaceholder}
         footer={tableFooter}

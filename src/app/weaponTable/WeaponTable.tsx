@@ -46,6 +46,8 @@ export interface WeaponTableColumnGroupDef {
 }
 
 interface Props {
+  regulationVersionName: string;
+
   rowGroups: readonly WeaponTableRowGroup[];
   placeholder?: ReactNode;
   footer?: ReactNode;
@@ -203,6 +205,7 @@ const DataRow = memo(function DataRow({
 });
 
 function WeaponTable({
+  regulationVersionName,
   rowGroups,
   placeholder,
   footer,
@@ -221,6 +224,7 @@ function WeaponTable({
   const columnGroups = useMemo(
     () =>
       getWeaponTableColumns({
+        regulationVersionName,
         splitDamage,
         showBaseDamage,
         splitSpellScaling,
@@ -229,7 +233,7 @@ function WeaponTable({
         weakRateTypes,
         spellScaling,
       }),
-    [splitDamage, showBaseDamage, splitSpellScaling, numericalScaling, attackPowerTypes, weakRateTypes, spellScaling],
+    [regulationVersionName, splitDamage, showBaseDamage, splitSpellScaling, numericalScaling, attackPowerTypes, weakRateTypes, spellScaling],
   );
 
   return (

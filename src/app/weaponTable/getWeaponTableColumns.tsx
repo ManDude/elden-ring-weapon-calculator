@@ -10,6 +10,7 @@ import {
   damageTypeIcons,
   damageTypeLabels,
   getAttributeLabel,
+  getEnemyTypeLabel,
   getReforgedEnemyTypeLabel,
   getShortAttributeLabel,
   getTotalDamageAttackPower,
@@ -318,6 +319,35 @@ const weakRateReforgedColumns: WeaponTableColumnDef[] = allWeakRateTypes.map((ty
   },
 }));
 
+const weakRateColumns: WeaponTableColumnDef[] = allWeakRateTypes.map((type) => ({
+  key: `${type}WeakRate`,
+  sortBy: `${type}WeakRate`,
+  header: (
+    <Typography
+      component="span"
+      variant="subtitle2"
+      title={`Bonus vs. ${getEnemyTypeLabel(type)}`}
+    >
+      {getEnemyTypeLabel(type)}
+    </Typography>
+  ),
+  render([weapon]) {
+    return (
+      <WeakRateRenderer
+        weapon={weapon}
+        type={type}
+      />
+    );
+  },
+}));
+
+const weakRateColumnsByRegulation: Record<string, WeaponTableColumnDef[]> = {
+  latest: weakRateColumns,
+  reforged: weakRateReforgedColumns,
+  convergence: weakRateColumns,
+  clevers: weakRateColumns,
+} as const;
+
 const requirementColumns = allAttributes.map(
   (attribute): WeaponTableColumnDef => ({
     key: `${attribute}Requirement`,
@@ -407,7 +437,7 @@ const miscColumns: WeaponTableColumnDef[] = [
         variant="subtitle2"
         title={"Stamina Cost"}
       >
-        Stamina Cost
+        Stam.Cost
       </Typography>
     ),
     render([weapon]) {
@@ -439,6 +469,7 @@ const miscColumns: WeaponTableColumnDef[] = [
 ];
 
 interface WeaponTableColumnsOptions {
+  regulationVersionName: string;
   splitDamage: boolean;
   showBaseDamage: boolean;
   splitSpellScaling: boolean;
@@ -449,6 +480,7 @@ interface WeaponTableColumnsOptions {
 }
 
 export default function getWeaponTableColumns({
+  regulationVersionName,
   splitDamage,
   showBaseDamage,
   splitSpellScaling,
@@ -543,7 +575,7 @@ export default function getWeaponTableColumns({
     {
       key: "misc",
       sx: {
-        width: 64 * miscColumns.length + 21,
+        width: 72 * miscColumns.length + 21,
       },
       header: "Other Properties",
       columns: miscColumns,
@@ -561,10 +593,10 @@ export default function getWeaponTableColumns({
         {
           key: "weakRate",
           sx: {
-            width: 64 * includedWeakRateTypes.length + 21,
+            width: 72 * includedWeakRateTypes.length + 21,
           },
           header: "Enemy Type Damage",
-          columns: includedWeakRateTypes.map((weakRateType) => weakRateReforgedColumns[weakRateType]),
+          columns: includedWeakRateTypes.map((weakRateType) => weakRateColumnsByRegulation[regulationVersionName][weakRateType]),
         }
       ]
       : []),

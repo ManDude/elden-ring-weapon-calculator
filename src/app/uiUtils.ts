@@ -319,17 +319,17 @@ export function getShortAttributeLabel(attribute: Attribute) {
 export function getEnemyTypeLabel(type: WeakRateType) {
   switch(type) {
     case WeakRateType.A:
-      return "A";
+      return "Void";
     case WeakRateType.B:
-      return "B";
+      return "Undead";
     case WeakRateType.C:
-      return "C";
+      return "DragonA";
     case WeakRateType.D:
-      return "D";
+      return "DragonB";
     case WeakRateType.E:
-      return "E";
+      return "DragonC";
     case WeakRateType.F:
-      return "F";
+      return "unused";
   }
 }
 
