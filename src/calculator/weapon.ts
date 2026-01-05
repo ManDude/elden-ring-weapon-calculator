@@ -78,6 +78,16 @@ export interface Weapon {
   stamDmg: number;
 
   /**
+   * Weight of the weapon
+   */
+  weight: number;
+
+  /**
+   * "Weight rate" of the weapon. Higher values slow down certain moves, lower values speed up certain moves.
+   */
+  weightRate: number;
+
+  /**
    * Stamina consumption rate of the weapon
    */
   stamCost: number;

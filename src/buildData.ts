@@ -796,6 +796,8 @@ function parseWeapon(row: ParamRow): EncodedWeaponJson | null {
     poise: row.saWeaponDamage,
     stamDmg: row.attackBaseStamina,
     stamCost: row.staminaConsumptionRate,
+    weight: row.weight,
+    weightRate: row.weaponWeightRate,
     bowDist: row.bowDistRate,
     crit: row.throwAtkRate,
     guardCutRate,

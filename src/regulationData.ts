@@ -71,6 +71,8 @@ export interface EncodedWeaponJson {
   calcCorrectGraphIds?: Partial<Record<AttackPowerType, number>>;
   poise: number;
   stamDmg: number;
+  weight: number;
+  weightRate: number;
   stamCost: number;
   bowDist: number;
   crit: number;

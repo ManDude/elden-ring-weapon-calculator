@@ -9,6 +9,8 @@ export type SortBy =
   | "poise"
   | "stamDmg"
   | "stamCost"
+  | "weight"
+  | "weightRate"
   | "bowDist"
   | "crit"
   | `${AttackPowerType}Attack`
@@ -47,6 +49,14 @@ export function sortWeapons(
 
     if (sortBy === "stamCost") {
       return ([weapon]) => -weapon.stamCost;
+    }
+
+    if (sortBy === "weight") {
+      return ([weapon]) => -weapon.weight;
+    }
+
+    if (sortBy === "weightRate") {
+      return ([weapon]) => -weapon.weightRate;
     }
 
     if (sortBy === "crit") {

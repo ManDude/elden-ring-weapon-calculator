@@ -429,6 +429,24 @@ const miscColumns: WeaponTableColumnDef[] = [
     },
   },
   {
+    key: "weight",
+    sortBy: "weight",
+    header: (
+      <Typography
+        component="span"
+        variant="subtitle2"
+        title={"Weight"}
+      >
+        Weight
+      </Typography>
+    ),
+    render([weapon]) {
+      return (
+        <>{weapon.weight}</>
+      );
+    },
+  },
+  {
     key: "stamCost",
     sortBy: "stamCost",
     header: (
@@ -463,6 +481,24 @@ const miscColumns: WeaponTableColumnDef[] = [
         <BowDistRenderer
           value={weapon.bowDist}
         />
+      );
+    },
+  },
+  {
+    key: "weightRate",
+    sortBy: "weightRate",
+    header: (
+      <Typography
+        component="span"
+        variant="subtitle2"
+        title={"Weight Rate"}
+      >
+        Wgt.Rate
+      </Typography>
+    ),
+    render([weapon]) {
+      return (
+        <>{weapon.weightRate}</>
       );
     },
   },
@@ -601,7 +637,7 @@ export default function getWeaponTableColumns({
       ]
       : []),
     {
-      key: "name",
+      key: "nameEnd",
       sx: { flex: 1, minWidth: 320 },
       columns: [nameColumn],
     },
