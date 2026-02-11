@@ -641,7 +641,7 @@ export default function getWeaponTableColumns({
       ? {
         key: "attack",
         sx: {
-          width: ((showBaseDamage ? 85 : 40) + (showScalingAsPercent ? 18 : 0)) * (allDamageTypes.length + 1) + 27,
+          width: ((showBaseDamage ? 85 : 40) + (showScalingAsPercent ? 22 : 0)) * (allDamageTypes.length + 1) + 27,
         },
         header: "Attack Power",
         columns: [
