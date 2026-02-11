@@ -502,6 +502,21 @@ const unobtainableWeapons = new Set(
         4550000, // Greatsword of Radahn (Dumb)
         17080000, // Vyke's War Spear
         33290000, // ST Staff
+        // Fletched Arrows and Greatarrows
+        50030000,
+        50060000,
+        50080000,
+        50130000,
+        50150000,
+        50170000,
+        50200000,
+        50260000,
+        50280000,
+        50300000,
+        50320000,
+        50340000,
+        50540000,
+        51050000,
       ]
     : isConvergence
     ? [

@@ -200,6 +200,13 @@ export const dlcWeaponTypes: WeaponType[] = [
   WeaponType.BEAST_CLAW,
 ];
 
+export const ammunitionTypes: WeaponType[] = [
+  WeaponType.ARROW,
+  WeaponType.GREATARROW,
+  WeaponType.BOLT,
+  WeaponType.BALLISTA_BOLT,
+];
+
 export const hiddenWeaponTypes: WeaponType[] = [WeaponType.DUAL_CATALYST];
 
 export const allWeaponTypes = [
@@ -208,6 +215,7 @@ export const allWeaponTypes = [
   ...catalystTypes,
   ...shieldTypes,
   ...hiddenWeaponTypes,
+  // ...ammunitionTypes,
 ];
 
 export const weaponTypeLabels = new Map<WeaponType, string>([
@@ -245,6 +253,10 @@ export const weaponTypeLabels = new Map<WeaponType, string>([
   [WeaponType.SMALL_SHIELD, "Small Shield"],
   [WeaponType.MEDIUM_SHIELD, "Medium Shield"],
   [WeaponType.GREATSHIELD, "Greatshield"],
+  [WeaponType.ARROW, "Arrow"],
+  [WeaponType.GREATARROW, "Greatarrow"],
+  [WeaponType.BOLT, "Bolt"],
+  [WeaponType.BALLISTA_BOLT, "Ballista Bolt"],
   [WeaponType.TORCH, "Torch"],
   [WeaponType.HAND_TO_HAND, "Hand-to-Hand"],
   [WeaponType.PERFUME_BOTTLE, "Perfume Bottle"],

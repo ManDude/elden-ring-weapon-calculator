@@ -6,6 +6,7 @@ import {
   rangedWeaponTypes,
   catalystTypes,
   shieldTypes,
+  // ammunitionTypes,
   weaponTypeLabels,
   dlcWeaponTypes,
 } from "./uiUtils.ts";
@@ -101,6 +102,9 @@ function WeaponTypePicker({ includeDLCWeaponTypes, weaponTypes, onWeaponTypesCha
 
       {renderWeaponCategory("Shields", shieldTypes)}
       <Box sx={{ ml: 3 }}>{shieldTypes.map(renderWeaponType)}</Box>
+
+      {/* {renderWeaponCategory("Ammunition", ammunitionTypes)}
+      <Box sx={{ ml: 3 }}>{ammunitionTypes.map(renderWeaponType)}</Box> */}
     </Box>
   );
 }
