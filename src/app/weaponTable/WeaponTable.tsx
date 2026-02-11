@@ -75,6 +75,11 @@ interface Props {
   numericalScaling: boolean;
 
   /**
+   * If true, table show a percentage indicating the % bonus from weapon scaling
+   */
+  showScalingAsPercent: boolean;
+
+  /**
    * Attack power types that must be included as columns in the table
    */
   attackPowerTypes: ReadonlySet<AttackPowerType>;
@@ -215,6 +220,7 @@ function WeaponTable({
   showBaseDamage,
   splitSpellScaling,
   numericalScaling,
+  showScalingAsPercent,
   attackPowerTypes,
   weakRateTypes,
   spellScaling,
@@ -229,11 +235,12 @@ function WeaponTable({
         showBaseDamage,
         splitSpellScaling,
         numericalScaling,
+        showScalingAsPercent,
         attackPowerTypes,
         weakRateTypes,
         spellScaling,
       }),
-    [regulationVersionName, splitDamage, showBaseDamage, splitSpellScaling, numericalScaling, attackPowerTypes, weakRateTypes, spellScaling],
+    [regulationVersionName, splitDamage, showBaseDamage, splitSpellScaling, numericalScaling, showScalingAsPercent, attackPowerTypes, weakRateTypes, spellScaling],
   );
 
   return (

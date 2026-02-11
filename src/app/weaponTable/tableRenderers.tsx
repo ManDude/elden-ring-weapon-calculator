@@ -176,6 +176,67 @@ export const AttackPowerWithBaseRenderer = memo(function AttackPowerWithBaseRend
 });
 
 /**
+ * Component that displays one damage type / status effect / spell scaling of a weapon.
+ */
+export const ScalingPercentRenderer = memo(function ScalingPercentRenderer({
+  value,
+  ineffective,
+}: {
+  value?: number;
+  ineffective: boolean;
+}) {
+  if (value == null || value == 0) {
+    return blankIcon;
+  }
+
+  if (ineffective) {
+    return (
+      <Typography
+        sx={{ color: (theme) => theme.palette.error.main }}
+        aria-label={`${round(value)}%. Unable to wield this weapon effectively with present stats`}
+      >
+        {round(value)}%
+      </Typography>
+    );
+  }
+
+  return <>{round(value*10)/10}%</>;
+});
+
+/**
+ * Component that displays one damage type alongside its base damage.
+ */
+export const ScalingPercentWithBaseRenderer = memo(function ScalingPercentWithBaseRenderer({
+  value,
+  valueBase,
+  ineffective,
+}: {
+  value?: number;
+  valueBase?: number;
+  ineffective: boolean;
+}) {
+  if (valueBase == null) {
+    valueBase = 0;
+  }
+  if (value == null || value == 0) {
+    return blankIcon;
+  }
+
+  if (ineffective) {
+    return (
+      <Typography
+        sx={{ color: (theme) => theme.palette.error.main }}
+        aria-label={`${round(value)}%. Unable to wield this weapon effectively with present stats`}
+      >
+        {round(valueBase)} - {-round(value*10)/10}%
+      </Typography>
+    );
+  }
+
+  return <>{round(valueBase)} + {round(value*10)/10}%</>;
+});
+
+/**
  * Component that displays one cut rate (guard negation) for a damage type of a weapon. Also guard stability.
  */
 export const CutRateRenderer = memo(function CutRateRenderer({

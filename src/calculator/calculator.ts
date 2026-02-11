@@ -17,6 +17,7 @@ export interface WeaponAttackResult {
   upgradeLevel: number;
   baseAttackPower: Partial<Record<AttackPowerType, number>>;
   attackPower: Partial<Record<AttackPowerType, number>>;
+  scalingPercent: Partial<Record<AttackPowerType, number>>;
   spellScaling: Partial<Record<AttackPowerType, number>>;
   guardCutRate: Partial<Record<AttackPowerType, number>>;
   stability: number;
@@ -86,6 +87,7 @@ export default function getWeaponAttack({
 
   const baseAttackPower: Partial<Record<AttackPowerType, number>> = {};
   const attackPower: Partial<Record<AttackPowerType, number>> = {};
+  const scalingPercent: Partial<Record<AttackPowerType, number>> = {};
   const spellScaling: Partial<Record<AttackPowerType, number>> = {};
   const guardCutRate: Partial<Record<AttackPowerType, number>> = {};
   const stability = weapon.stability ? weapon.stability[upgradeLevel] : 0;
@@ -96,62 +98,63 @@ export default function getWeaponAttack({
     guardCutRate[attackPowerType] = weapon.guardCutRate[upgradeLevel][attackPowerType];
 
     const currentBaseAttackPower = weapon.attack[upgradeLevel][attackPowerType] ?? 0;
-    if (currentBaseAttackPower || weapon.sorceryTool || weapon.incantationTool) {
-      // This weapon's AttackElementCorrectParam determines what attributes each damage type scales
-      // with
-      const scalingAttributes = weapon.attackElementCorrect[attackPowerType] ?? {};
+    // This weapon's AttackElementCorrectParam determines what attributes each damage type scales
+    // with
+    const scalingAttributes = weapon.attackElementCorrect[attackPowerType] ?? {};
 
-      let totalScaling = 1;
+    let totalScaling = 1;
 
-      if (isDamageType && ineffectiveAttributes.some((attribute) => scalingAttributes[attribute])) {
-        // If the requirements for this damage type are not met, a penalty is subtracted instead
-        // of a scaling bonus being added
-        totalScaling = 1 - ineffectiveAttributePenalty;
-        ineffectiveAttackPowerTypes.push(attackPowerType);
-      } else {
-        // Otherwise, the scaling multiplier is equal to the sum of the corrected attribute values
-        // multiplied by the scaling for that attribute
-        const effectiveAttributes =
-          !disableTwoHandingAttackPowerBonus && isDamageType ? adjustedAttributes : attributes;
-        for (const attribute of allAttributes) {
-          const attributeCorrect = scalingAttributes[attribute];
-          if (attributeCorrect) {
-            let scaling: number;
-            if (attributeCorrect === true) {
-              scaling = weapon.attributeScaling[upgradeLevel][attribute] ?? 0;
-            } else {
-              scaling =
-                (attributeCorrect * (weapon.attributeScaling[upgradeLevel][attribute] ?? 0)) /
-                (weapon.attributeScaling[0][attribute] ?? 0);
-            }
+    if (isDamageType && ineffectiveAttributes.some((attribute) => scalingAttributes[attribute])) {
+      // If the requirements for this damage type are not met, a penalty is subtracted instead
+      // of a scaling bonus being added
+      totalScaling = 1 - ineffectiveAttributePenalty;
+      ineffectiveAttackPowerTypes.push(attackPowerType);
+    } else {
+      // Otherwise, the scaling multiplier is equal to the sum of the corrected attribute values
+      // multiplied by the scaling for that attribute
+      const effectiveAttributes =
+        !disableTwoHandingAttackPowerBonus && isDamageType ? adjustedAttributes : attributes;
+      for (const attribute of allAttributes) {
+        const attributeCorrect = scalingAttributes[attribute];
+        if (attributeCorrect) {
+          let scaling: number;
+          if (attributeCorrect === true) {
+            scaling = weapon.attributeScaling[upgradeLevel][attribute] ?? 0;
+          } else {
+            scaling =
+              (attributeCorrect * (weapon.attributeScaling[upgradeLevel][attribute] ?? 0)) /
+              (weapon.attributeScaling[0][attribute] ?? 0);
+          }
 
-            if (scaling) {
-              totalScaling +=
-                weapon.calcCorrectGraphs[attackPowerType][effectiveAttributes[attribute]] * scaling;
-            }
+          if (scaling) {
+            totalScaling +=
+              weapon.calcCorrectGraphs[attackPowerType][effectiveAttributes[attribute]] * scaling;
           }
         }
       }
-
-      // The final scaling multiplier modifies the attack power for this damage type as a
-      // percentage boost, e.g. 0.5 adds +50% of the base attack power
-      if (currentBaseAttackPower) {
-        baseAttackPower[attackPowerType] = currentBaseAttackPower;
-        if (includeArcaneBonus && !isDamageType && weapon.statusAdditionalCalcCorrectGraph) {
-          baseAttackPower[attackPowerType] *= 100 * weapon.statusAdditionalCalcCorrectGraph[adjustedAttributes["arc"]];
-        }
-        attackPower[attackPowerType] = baseAttackPower[attackPowerType] * totalScaling;
-      }
-
-      if (isDamageType && (weapon.sorceryTool || weapon.incantationTool)) {
-        spellScaling[attackPowerType] = 100 * totalScaling;
-      }
     }
+
+    // The final scaling multiplier modifies the attack power for this damage type as a
+    // percentage boost, e.g. 0.5 adds +50% of the base attack power
+    if (currentBaseAttackPower) {
+      baseAttackPower[attackPowerType] = currentBaseAttackPower;
+      if (includeArcaneBonus && !isDamageType && weapon.statusAdditionalCalcCorrectGraph) {
+        baseAttackPower[attackPowerType] *= 100 * weapon.statusAdditionalCalcCorrectGraph[adjustedAttributes["arc"]];
+      }
+      attackPower[attackPowerType] = baseAttackPower[attackPowerType] * totalScaling;
+    }
+
+    if (isDamageType && (weapon.sorceryTool || weapon.incantationTool)) {
+      spellScaling[attackPowerType] = 100 * totalScaling;
+    }
+    
+    scalingPercent[attackPowerType] = (totalScaling - 1) * 100
   }
 
   return {
     upgradeLevel,
     baseAttackPower,
+    scalingPercent,
     attackPower,
     guardCutRate,
     stability,

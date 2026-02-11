@@ -20,6 +20,7 @@ interface AppState {
   readonly showBaseDamage: boolean;
   readonly groupWeaponTypes: boolean;
   readonly numericalScaling: boolean;
+  readonly showScalingAsPercent: boolean;
   readonly sortBy: SortBy;
   readonly reverse: boolean;
   readonly selectedWeapons: WeaponOption[];
@@ -38,6 +39,7 @@ interface UpdateAppState extends AppState {
   setEffectiveOnly(effectiveOnly: boolean): void;
   setSplitDamage(splitDamage: boolean): void;
   setShowBaseDamage(showBaseDamage: boolean): void;
+  setShowScalingAsPercent(showScalingAsPercent: boolean): void;
   setGroupWeaponTypes(groupWeaponTypes: boolean): void;
   setNumericalScaling(numericalScaling: boolean): void;
   setSortBy(sortBy: SortBy): void;
@@ -65,6 +67,7 @@ const defaultAppState: AppState = {
   showBaseDamage: false,
   groupWeaponTypes: false,
   numericalScaling: false,
+  showScalingAsPercent: false,
   sortBy: "totalAttack",
   reverse: false,
   selectedWeapons: [],
@@ -177,6 +180,9 @@ export default function useAppState() {
       },
       setShowBaseDamage(showBaseDamage) {
         setAppState((prevAppState) => ({ ...prevAppState, showBaseDamage }));
+      },
+      setShowScalingAsPercent(showScalingAsPercent) {
+        setAppState((prevAppState) => ({ ...prevAppState, showScalingAsPercent }));
       },
       setGroupWeaponTypes(groupWeaponTypes) {
         setAppState((prevAppState) => ({ ...prevAppState, groupWeaponTypes }));

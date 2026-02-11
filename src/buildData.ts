@@ -591,8 +591,15 @@ const wepTypeOverrides = new Map([
 
 const supportedWeaponTypes = new Set<number>(Object.values(WeaponType));
 
+export const excludedWeaponTypes: WeaponType[] = [
+  WeaponType.ARROW,
+  WeaponType.GREATARROW,
+  WeaponType.BOLT,
+  WeaponType.BALLISTA_BOLT,
+];
+
 function isSupportedWeaponType(wepType: number): wepType is WeaponType {
-  return supportedWeaponTypes.has(wepType);
+  return supportedWeaponTypes.has(wepType) && !excludedWeaponTypes.includes(wepType as WeaponType);
 }
 
 function parseWeapon(row: ParamRow): EncodedWeaponJson | null {

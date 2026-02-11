@@ -22,6 +22,8 @@ import {
   AttributeRequirementRenderer,
   AttackPowerRenderer,
   AttackPowerWithBaseRenderer,
+  ScalingPercentRenderer,
+  ScalingPercentWithBaseRenderer,
   CutRateRenderer,
   BowDistRenderer,
   WeakRateRenderer,
@@ -107,6 +109,78 @@ const attackWithBaseColumns = Object.fromEntries(
           return (
             <AttackPowerRenderer
               value={attackPower[attackPowerType]}
+              ineffective={ineffectiveAttackPowerTypes.includes(attackPowerType)}
+            />
+          );
+        }
+      },
+    },
+  ]),
+) as Record<AttackPowerType, WeaponTableColumnDef>;
+
+const scalingPercentColumns = Object.fromEntries(
+  allAttackPowerTypes.map((attackPowerType): [AttackPowerType, WeaponTableColumnDef] => [
+    attackPowerType,
+    {
+      key: `${attackPowerType}Attack`,
+      sortBy: `${attackPowerType}Attack`,
+      header: damageTypeIcons.has(attackPowerType) ? (
+        <img
+          src={damageTypeIcons.get(attackPowerType)!}
+          alt={damageTypeLabels.get(attackPowerType)!}
+          title={damageTypeLabels.get(attackPowerType)!}
+          width={24}
+          height={24}
+        />
+      ) : (
+        <Typography component="span" variant="subtitle2">
+          {damageTypeLabels.get(attackPowerType)}
+        </Typography>
+      ),
+      render([, { scalingPercent, ineffectiveAttackPowerTypes }]) {
+        return (
+          <ScalingPercentRenderer
+            value={scalingPercent[attackPowerType]}
+            ineffective={ineffectiveAttackPowerTypes.includes(attackPowerType)}
+          />
+        );
+      },
+    },
+  ]),
+) as Record<AttackPowerType, WeaponTableColumnDef>;
+
+const scalingPercentWithBaseColumns = Object.fromEntries(
+  allAttackPowerTypes.map((attackPowerType): [AttackPowerType, WeaponTableColumnDef] => [
+    attackPowerType,
+    {
+      key: `${attackPowerType}Attack`,
+      sortBy: `${attackPowerType}Attack`,
+      header: damageTypeIcons.has(attackPowerType) ? (
+        <img
+          src={damageTypeIcons.get(attackPowerType)!}
+          alt={damageTypeLabels.get(attackPowerType)!}
+          title={damageTypeLabels.get(attackPowerType)!}
+          width={24}
+          height={24}
+        />
+      ) : (
+        <Typography component="span" variant="subtitle2">
+          {damageTypeLabels.get(attackPowerType)}
+        </Typography>
+      ),
+      render([, { scalingPercent, baseAttackPower, ineffectiveAttackPowerTypes }]) {
+        if (scalingPercent[attackPowerType] != 0) {
+          return (
+            <ScalingPercentWithBaseRenderer
+              value={scalingPercent[attackPowerType]}
+              valueBase={baseAttackPower[attackPowerType]}
+              ineffective={ineffectiveAttackPowerTypes.includes(attackPowerType)}
+            />
+          );
+        } else {
+          return (
+            <ScalingPercentRenderer
+              value={scalingPercent[attackPowerType]}
               ineffective={ineffectiveAttackPowerTypes.includes(attackPowerType)}
             />
           );
@@ -510,6 +584,7 @@ interface WeaponTableColumnsOptions {
   showBaseDamage: boolean;
   splitSpellScaling: boolean;
   numericalScaling: boolean;
+  showScalingAsPercent: boolean;
   attackPowerTypes: ReadonlySet<AttackPowerType>;
   weakRateTypes: ReadonlySet<WeakRateType>;
   spellScaling: boolean;
@@ -521,6 +596,7 @@ export default function getWeaponTableColumns({
   showBaseDamage,
   splitSpellScaling,
   numericalScaling,
+  showScalingAsPercent,
   attackPowerTypes,
   weakRateTypes,
   spellScaling,
@@ -565,12 +641,12 @@ export default function getWeaponTableColumns({
       ? {
         key: "attack",
         sx: {
-          width: (showBaseDamage ? 85 : 40) * (allDamageTypes.length + 1) + 27,
+          width: ((showBaseDamage ? 85 : 40) + (showScalingAsPercent ? 18 : 0)) * (allDamageTypes.length + 1) + 27,
         },
         header: "Attack Power",
         columns: [
-          ...allDamageTypes.map((damageType) => (showBaseDamage ? attackWithBaseColumns : attackColumns)[damageType]),
-          totalSplitAttackPowerColumn,
+          ...allDamageTypes.map((damageType) => (showBaseDamage ? (showScalingAsPercent ? scalingPercentWithBaseColumns : attackWithBaseColumns) : (showScalingAsPercent ? scalingPercentColumns : attackColumns))[damageType]),
+          ...(showScalingAsPercent && !showBaseDamage ? [] : [totalSplitAttackPowerColumn]),
         ],
       }
       : {

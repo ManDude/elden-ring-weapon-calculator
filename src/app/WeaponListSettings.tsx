@@ -112,6 +112,7 @@ interface Props {
   showBaseDamage: boolean;
   groupWeaponTypes: boolean;
   numericalScaling: boolean;
+  showScalingAsPercent: boolean;
   includeArcaneBonus: boolean;
   showIncludeArcaneBonus: boolean;
   onAttributeChanged(attribute: Attribute, value: number): void;
@@ -119,6 +120,7 @@ interface Props {
   onUpgradeLevelChanged(upgradeLevel: number): void;
   onSplitDamageChanged(splitDamage: boolean): void;
   onShowBaseDamageChanged(showBaseDamage: boolean): void;
+  onShowScalingAsPercentChanged(showScalingAsPercent: boolean): void;
   onGroupWeaponTypesChanged(groupWeaponTypes: boolean): void;
   onNumericalScalingChanged(numericalScaling: boolean): void;
   onIncludeArcaneBonusChanged(includeArcaneBonus: boolean): void;
@@ -137,6 +139,7 @@ function WeaponListSettings({
   showBaseDamage,
   groupWeaponTypes,
   numericalScaling,
+  showScalingAsPercent,
   includeArcaneBonus,
   showIncludeArcaneBonus,
   onAttributeChanged,
@@ -144,6 +147,7 @@ function WeaponListSettings({
   onUpgradeLevelChanged,
   onSplitDamageChanged,
   onShowBaseDamageChanged,
+  onShowScalingAsPercentChanged,
   onGroupWeaponTypesChanged,
   onNumericalScalingChanged,
   onIncludeArcaneBonusChanged,
@@ -212,6 +216,11 @@ function WeaponListSettings({
           label="Split base and scaling damage"
           checked={showBaseDamage}
           onChange={onShowBaseDamageChanged}
+        />
+        <BooleanInput
+          label="Show scaling damage as percentage"
+          checked={showScalingAsPercent}
+          onChange={onShowScalingAsPercentChanged}
         />
         {showIncludeArcaneBonus && (
           <BooleanInput

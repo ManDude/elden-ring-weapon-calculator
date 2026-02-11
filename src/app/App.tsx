@@ -114,6 +114,7 @@ export default function App() {
     upgradeLevel,
     groupWeaponTypes,
     numericalScaling,
+    showScalingAsPercent,
     sortBy,
     reverse,
     selectedWeapons,
@@ -126,6 +127,7 @@ export default function App() {
     setEffectiveOnly,
     setSplitDamage,
     setShowBaseDamage,
+    setShowScalingAsPercent,
     setTwoHanding,
     setUpgradeLevel,
     setGroupWeaponTypes,
@@ -213,6 +215,7 @@ export default function App() {
         showBaseDamage={showBaseDamage}
         splitSpellScaling={!!regulationVersion.splitSpellScaling}
         numericalScaling={numericalScaling}
+        showScalingAsPercent={showScalingAsPercent}
         attackPowerTypes={attackPowerTypes}
         weakRateTypes={weakRateTypes}
         spellScaling={spellScaling}
@@ -357,6 +360,7 @@ export default function App() {
             showBaseDamage={showBaseDamage}
             groupWeaponTypes={groupWeaponTypes}
             numericalScaling={numericalScaling}
+            showScalingAsPercent={showScalingAsPercent}
             includeArcaneBonus={includeArcaneBonus}
             showIncludeArcaneBonus={showIncludeArcaneBonus}
             onAttributeChanged={setAttribute}
@@ -364,6 +368,7 @@ export default function App() {
             onUpgradeLevelChanged={setUpgradeLevel}
             onSplitDamageChanged={setSplitDamage}
             onShowBaseDamageChanged={setShowBaseDamage}
+            onShowScalingAsPercentChanged={setShowScalingAsPercent}
             onGroupWeaponTypesChanged={setGroupWeaponTypes}
             onNumericalScalingChanged={setNumericalScaling}
             onIncludeArcaneBonusChanged={setIncludeArcaneBonus}
