@@ -250,7 +250,7 @@ export const CutRateRenderer = memo(function CutRateRenderer({
 
   return (
     <span title={`${value}%`}>
-      {`${Math.round(value * 10) / 10}%`}
+      {`${Math.min(100, Math.round(value * 10) / 10)}%`}
     </span>);
 });
 
