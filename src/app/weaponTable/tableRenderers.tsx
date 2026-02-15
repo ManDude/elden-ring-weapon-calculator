@@ -218,10 +218,17 @@ export const ScalingPercentWithBaseRenderer = memo(function ScalingPercentWithBa
   if (valueBase == null) {
     valueBase = 0;
   }
-  if (value == null || value == 0) {
+  if (value == null) {
+    value = 0;
+  }
+  if (valueBase == 0 && value == 0) {
     return blankIcon;
   }
 
+  if (value == 0) {
+    return <>{round(valueBase)}</>;
+  }
+  
   if (ineffective) {
     return (
       <Typography
