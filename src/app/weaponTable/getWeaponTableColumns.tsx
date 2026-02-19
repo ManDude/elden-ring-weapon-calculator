@@ -558,6 +558,9 @@ const miscColumns: WeaponTableColumnDef[] = [
       );
     },
   },
+];
+
+const miscReforgedColumns: WeaponTableColumnDef[] = [
   {
     key: "weightRate",
     sortBy: "weightRate",
@@ -690,7 +693,7 @@ export default function getWeaponTableColumns({
         width: 72 * miscColumns.length + 21,
       },
       header: "Other Properties",
-      columns: miscColumns,
+      columns: [ ...miscColumns, ...(regulationVersionName == "reforged" ? [...miscReforgedColumns] : []) ],
     },
     ...(includedWeakRateTypes.length > 0 ?
       [
