@@ -692,14 +692,6 @@ export default function getWeaponTableColumns({
       header: "Other Properties",
       columns: miscColumns,
     },
-    {
-      key: "guardCutRate",
-      sx: {
-        width: 54 * (allAttackPowerTypes.length + 1) + 27,
-      },
-      header: "Guard Properties",
-      columns: [stabilityColumn, ...allAttackPowerTypes.map((damageType) => (cutRateColumns)[damageType])],
-    },
     ...(includedWeakRateTypes.length > 0 ?
       [
         {
@@ -712,6 +704,14 @@ export default function getWeaponTableColumns({
         }
       ]
       : []),
+    {
+      key: "guardCutRate",
+      sx: {
+        width: 54 * (allAttackPowerTypes.length + 1) + 27,
+      },
+      header: "Guard Properties",
+      columns: [stabilityColumn, ...allAttackPowerTypes.map((damageType) => (cutRateColumns)[damageType])],
+    },
     {
       key: "nameEnd",
       sx: { flex: 1, minWidth: 320 },
