@@ -578,6 +578,7 @@ const wepTypeOverrides = new Map([
         [2250000, WeaponType.STRAIGHT_SWORD], // Lazuli Glintstone Sword
         [2530000, WeaponType.THRUSTING_SWORD], // Carian Sorcery Sword
         [4110000, WeaponType.COLOSSAL_SWORD], // Troll Knight's Sword
+        [5080000, WeaponType.THRUSTING_SWORD], // Immortal Coil
         [11060000, WeaponType.HAMMER], // Varre's Bouquet
         [16100000, WeaponType.SPEAR], // Disciple's Rotten Branch
         [18100000, WeaponType.HALBERD], // Loretta's War Sickle
